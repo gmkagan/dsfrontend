@@ -83,16 +83,20 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 
 	$scope.soundsCheck = function () {
 		$scope.playSounds = !$scope.playSounds;
-		if (!$scope.playSounds) {
-			pauseSounds();
-		}
+		pauseSounds();
 	}
 	
 	
 	pauseSounds = function() {
 		if ($scope.soundPlaying != "") {
-			var audio = document.getElementById(soundId);
-			audio.pause(soundId);
+			var audio = document.getElementById($scope.soundPlaying);
+			if(audio.paused) {
+				audio.play();
+			}
+			else {
+				audio.pause($scope.soundPlaying);
+				$scope.soundPlaying = "";
+			}
 		}
 	}
 
