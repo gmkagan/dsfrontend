@@ -17,7 +17,7 @@
 		</td>
 	</tr>
 	<tr ng-show="isActive===true">
-		<td> <span  ng-show="sumMarketValueSelected > 0"><b>Items selected for trade:<b></span>
+		<td> <span  ng-show="sumMarketValueSelected > 0"><b>Items selected for trade:</b></span>
 			<span  ng-repeat="tradecard in game.marketDeckInTrade.playingCards track by $index">
 				<img style="padding-top: 15px;" ng-src="{{tradecard.image}}" ng-click="userClickedMarketTradeImage($index)"></img>
 			</span>

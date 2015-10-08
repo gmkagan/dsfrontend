@@ -13,9 +13,10 @@
 				<li class="checkbox">
 					<input type="checkbox" ng-click="runLocalHostCheck()" ng-model="runLocalHost"> Run Localhost?  Currently running on 				
 					<span ng-switch on="runLocalHost">
-					<span ng-switch-when="true">LocalHost</span>
-					<span ng-switch-default>{{siteUrl}}</span>
-				</span>
+						<span ng-switch-when="true">LocalHost</span>
+						<span ng-switch-default>{{siteUrl}}</span>
+					</span>
+					</input>
 				</li>
 				<li class="checkbox">
 					<input type="checkbox" ng-click="soundsCheck()" ng-model="playSounds"> Sounds On?

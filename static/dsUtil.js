@@ -738,6 +738,18 @@ logPlayerAction = function(isActive, playersLog, playerName, logItem, scope) {
 						case "action":
 							logEntry+="";
 							break;
+						case "playerId":
+							logActions[1] = "";
+							logEntry+="";
+							break;
+						case "gameKey":
+							logActions[1] = "";
+							logEntry+="";
+							break;
+						case "actionCost":
+							logActions[1] = "";
+							logEntry+="";
+							break;
 						case "discard":
 							logEntry+=" discarded";
 							sound = getSound(logActions[j], scope);
@@ -779,7 +791,7 @@ logPlayerAction = function(isActive, playersLog, playerName, logItem, scope) {
 							logEntry+=" to the ";
 							break;
 						case "src":
-							logEntry+=" from the " ;
+							logEntry+=" from their " ;
 							break;
 						case "handItems":
 							logEntry+=convertToName("hand") + " item(s) ";
@@ -831,7 +843,9 @@ logPlayerAction = function(isActive, playersLog, playerName, logItem, scope) {
 							logEntry+= "";
 							break;
 						default:
-							logEntry+=logActions[j];
+							if (!isNaN(parseInt(logActions[j]))) {
+								logEntry+=parseFromArrayIntoNames(parseToArray(logActions[j]));
+							}
 					}
 				}
 			}

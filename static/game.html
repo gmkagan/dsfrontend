@@ -56,8 +56,10 @@
 
 
 </div>
-<button ng-show="numberOfPlayers > 1"class="btn btn-warning" ng-click="showOtherPlayerDataClick()" >{{showHideVar}} Other Player Info?</button>
-<div ng-show="numberOfPlayers > 1" ng-include src="'static/otherPlayers.html'" ></ng-include></div>
+<div>	
+	<button ng-show="numberOfPlayers > 1"class="btn btn-warning" ng-click="showOtherPlayerDataClick()" >{{showHideVar}} Other Player Info?</button>
+	<div ng-show="numberOfPlayers > 1" ng-include src="'static/otherPlayers.html'" ></ng-include></div>
+</div>
 
 
 			
