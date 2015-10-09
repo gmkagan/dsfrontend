@@ -147,6 +147,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		$scope.displayMode = "nogame";
 		$scope.playerName="Player";
 		$scope.sounds = prepSounds();
+		$scope.adj = setAdj();
 		$scope.game=null;
 		hideImages($scope);
 		listGames();
@@ -1435,7 +1436,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				if (event.prepWhatItems1.length > 0) {
 					parr1 = parseToArray(event.prepWhatItems1);
 					for (var c = 0; c < parr1.length; ++c) {
-						prep1 += getCardName(parr1[c]) + " from their " + getAdj[$scope.x] + " " + event.prepFromWhere1;
+						prep1 += getCardName(parr1[c]) + " from their " + $scope.adj[$scope.x] + " " + event.prepFromWhere1;
 						card = game.itemMarketHolders.playingCards[parr1[c]-1];
 						player.lastEvent.images.addCardc(card);						
 						if(c+1 < event.prepWhatItems1.length) {
@@ -1449,7 +1450,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				if (event.whatItems1.length > 0) {
 					arr1 = parseToArray(event.whatItems1);
 					for (var c = 0; c < arr1.length; ++c) {
-						text1 += getCardName(arr1[c]) + " from their " + getAdj[$scope.y] + " " + event.fromWhere1;
+						text1 += getCardName(arr1[c]) + " from their " + $scope.adj[$scope.y] + " " + event.fromWhere1;
 						card = game.itemMarketHolders.playingCards[arr1[c]-1];
 						player.lastEvent.images.addCardc(card);						
 						if(c+1 < event.whatItems1.length) {
@@ -1461,7 +1462,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				if (event.whatItems2.length > 0) {
 					arr2 = parseToArray(event.whatItems2);
 					for (var c = 0; c < arr2.length; ++c) {
-						text2 += getCardName(arr2[c]) + " from their " + getAdj[$scope.z] + " " +  event.fromWhere2;
+						text2 += getCardName(arr2[c]) + " from their " + $scope.adj[$scope.z] + " " +  event.fromWhere2;
 						card = game.itemMarketHolders.playingCards[arr2[c]-1];
 						player.lastEvent.images.addCardc(card);						
 						if(c+1 < event.whatItems2.length) {
@@ -1549,7 +1550,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 						eventCompletedText = player.name + " defeated the Orcs!";
 					}
 					else {
-						eventCompletedText = "Orcs have destroyed " + player.name +  "'s " + getAdj[$scope.w] + " wheelbarrow.  ";
+						eventCompletedText = "Orcs have destroyed " + player.name +  "'s " + $scope.adj[$scope.w] + " wheelbarrow.  ";
 						if(event.prepWhatItems1.length > 0) {
 							eventCompletedText += player.name + " received " + parseFromArrayIntoNames(parr1) + " from their destroyed cart!  ";
 						}
@@ -1583,7 +1584,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					if (event.whatItems1.length > 0) {
 						arr1 = parseToArray(event.whatItems1.length);
 						for (var c = 0; c < arr1.length; ++c) {
-							move1 += " " + getCardName(arr1[c]) + " from their " + getAdj[$scope.y] + " " + event.fromWhere1;
+							move1 += " " + getCardName(arr1[c]) + " from their " + $scope.adj[$scope.y] + " " + event.fromWhere1;
 							if(c+1 < event.whatItems.length) {
 								move1 += " and ";
 							}
@@ -1598,7 +1599,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 								eventCompletedText += " and ";
 							}
 						}
-						eventCompletedText += " to their " + getAdj[$scope.w] + " " + event.moveDest + ".";
+						eventCompletedText += " to their " + $scope.adj[$scope.w] + " " + event.moveDest + ".";
 					}
 					break;
 				case 18:
@@ -1886,7 +1887,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		gameFactory.completeEventDealQuest($scope.siteUrl, $scope.gameKey, $scope.myId, eventId, processGameStateCallback, processGameStateErrorCallback);
 	}
 
-	function completeEvent(eventId, playerId, gold, items, what1, where1, what2, where2, dest1) {
+	function completeEvent(eventId, gold, items, what1, where1, what2, where2, dest1) {
 		$scope.loadingData=true;
 		gameFactory.completeEvent($scope.siteUrl, $scope.gameKey, $scope.myId, eventId, gold, items, what1, where1, what2, where2, dest1, processGameStateCallback, processGameStateErrorCallback);
 	}

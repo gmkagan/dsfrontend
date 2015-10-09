@@ -164,7 +164,7 @@ getCardName = function (number) {
 	return name;
 }
 
-getAdj = function(i) {
+setAdj = function(i) {
 	var adj = [];
 	adj[0] = "dope";
 	adj[1] = "shaky";
@@ -177,7 +177,7 @@ getAdj = function(i) {
 	adj[8] = "rugged";
 	adj[9] = "powerhouse";
 	adj[10] = "secure";
-	return adj[i];
+	return adj;
 }
 
 playerCardChecked = function(card) {
