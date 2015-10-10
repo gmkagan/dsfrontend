@@ -100,7 +100,7 @@ cardSet.prototype.createBlankMarket = function(imageBase) {
 		   var name = "";
 		   switch (a) {
 			   case 1: 
-				   name = "Club";
+				   name = "Torch";
 				   break;
 			   case 2:
 				   name = "Shield";
@@ -121,13 +121,13 @@ cardSet.prototype.createBlankMarket = function(imageBase) {
 				   name = "Crossbow";
 				   break;
 			   case 8:
-				   name = "Armor";
+				   name = "Helmet";
 				   break;
 			   case 9:
-				   name = "Trebuchet";
+				   name = "Staff";
 				   break;
 			   case 10:
-				   name = "Ballista";
+				   name = "Key";
 				   break;
 			   default:
 				   name = "Unknown";
@@ -140,13 +140,13 @@ cardSet.prototype.createBlankMarket = function(imageBase) {
         this.addCard(-1,"CardBack",oImage,oImage,oImage,oImage, oImage, 0);
         oImage=imageBase+"1_gold.jpg";
 		this.addCard(49,"Gold",oImage,oImage,oImage,oImage, oImage, 0);
-        oImage=imageBase+"cart0_sm.jpg";
+        oImage=imageBase+"cart0.jpg";
 		this.addCard(50,"Wheelbarrow",oImage,oImage,oImage,oImage, oImage, 0);
-        oImage=imageBase+"cart1_sm.jpg";		
+        oImage=imageBase+"cart1.jpg";		
 		this.addCard(51,"Hand Cart",oImage,oImage,oImage,oImage, oImage, 0);
-        oImage=imageBase+"cart2_sm.jpg";
+        oImage=imageBase+"cart2.jpg";
 		this.addCard(52,"Horse Wagon",oImage,oImage,oImage,oImage, oImage, 0);
-        oImage=imageBase+"cart3_sm.jpg";
+        oImage=imageBase+"cart3.jpg";
 		this.addCard(53,"War Wagon",oImage,oImage,oImage,oImage, oImage, 0);
 
 	}

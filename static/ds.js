@@ -679,7 +679,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		var cart = player.carts[id];
 		var selectedCards = getSelectedCards(cart.cards, true);
 		var actionCost = 1;
-		
+		var arr1 = [];
 		if(player.actionsRemaining === 0)	{
 			alert("You have no actions.");
 			return false;
@@ -692,8 +692,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		
 		//if cart cards are selected, move between carts else its player items to cart
 		if($scope.selectedCartItemsCount > 0) {
-
-			var r =  confirm("Are you sure you want discard?");
+			arr1 = parseToArray(selectedCards);
+			var r =  confirm("Are you sure you want discard the " + parseFromArrayIntoNames(arr1) + "?");
 			if(r===true) {
 				discard(actionCost, selectedCards, 'cart'+id)
 			}
@@ -714,7 +714,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		var selectedCardCount = getSelectedCardcount(player.cards, true);
 		var selectedCards = getSelectedCards(player.cards, true);
 		var actionCost = 1;
-		
+		var arr1 = [];
 		//if you have actions, discard selected cards, if not but have too many cards, discard anyway	
 		var  cardCount = 0;
 
@@ -727,8 +727,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			alert('Select some items to discard.');
 			return;
 		}
-		
-		var r =  confirm("Are you sure you want discard?");
+		arr1 = parseToArray(selectedCards);
+		var r =  confirm("Are you sure you want discard the " + parseFromArrayIntoNames(arr1) + "?");
 		if(r===true) {
 			discard(actionCost, selectedCards, 'hand');
 		}
@@ -749,6 +749,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		var selectedCards = getSelectedCards(player.cards, true);
 		var cart = player.carts[cartId];
 		var actionCost = 1;
+		var arr1 = [];
 		if(player.actionsRemaining === 0)	{
 			alert("You have no actions.");
 			return;
@@ -769,7 +770,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		}
 		
 		if(total >= cart.itemCost) {
-			var r = confirm("Confirm purchase with items!");
+			arr1 = parseToArray(selectedCards);
+			var r = confirm("Confirm purchase with items " + parseFromArrayIntoNames(arr1) + "?");
 				if (r === true) {
 					buyCart(actionCost, 'cart'+cartId, 0, selectedCards);
 				}
@@ -878,6 +880,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		var selectedMarketCards = getSelectedCards(game.marketDeckInTrade, true);
 		var selectedCardCount = getSelectedCardcount(player.cards, true);
 		var actionCost = 1;
+		
 		$scope.selectedItemsCount = selectedCardCount;
 		
 		if(player.actionsRemaining === 0)	{
@@ -905,12 +908,13 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			return;
 		}
 		if($scope.sumMarketValueSelected != $scope.activePlayer.cardSumSelected) {
+
 			alert('Sum of items selected must be equal.  Your Items selected: ' + $scope.activePlayer.cardSumSelected + ' Market Items selected: ' + $scope.sumMarketValueSelected);
 			return;
 		}		
 
 		//move player items to market
-			text = "Market trade with " + parseFromArray(selectedItemCards) + ' for ' + parseFromArray(selectedMarketCards);
+			text = "Market trade with " + parseFromArrayIntoNames(parseToArray(selectedItemCards)) + ' for ' + parseFromArrayIntoNames(parseToArray(selectedMarketCards));
 		
 			var r =  confirm(text + "?");
 			if(r===true) {
