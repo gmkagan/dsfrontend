@@ -39,7 +39,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	$scope.playSounds = true;
 	$scope.soundPlaying = "";
 	$scope.musicPlaying = "";
-	$scope.musicText = "Pause";
+	$scope.musicText = "Play";
 	$scope.playMusic = false;
 	$scope.autoSelectHand = true;
 	$scope.autoSelectCart = true;
@@ -130,17 +130,18 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				}
 			else {
 				if(audio.paused) {
+					$scope.playMusic = true;
 					audio.play();
 					$scope.musicText = "Pause";
-					$scope.playMusic = true;
 				}
 
 			}
 		}
 		else {
+			$scope.playMusic = true;
 			playMusic($scope.music[0].name);
 			$scope.musicText = "Pause";
-			$scope.playMusic = true;
+
 		}
 	}
 	
@@ -560,8 +561,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		
 		//when moved from player to cart
 		move(actionCost, selectedCards, 'hand','cart'+id)
-			
-		cart.cards.setCardSize("small");
+			cart.cards.setCardSize("orig");
+		//cart.cards.setCardSize("small");
 		resetAllSelectedCards(player);
 		play($scope.sounds[5].name);
 
@@ -596,8 +597,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		
 		//move cart items to cart
 		move(actionCost, selectedCartItems, 'cart'+prevId, 'cart'+id)
-		
-		cart.cards.setCardSize("small");
+		cart.cards.setCardSize("orig");
+		//cart.cards.setCardSize("small");
 		resetAllSelectedCards(player);
 		return true;
 
@@ -1397,7 +1398,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 						}
 						else {
 							card.borderColor = cardColor(card);
-							card.setCardSize("small");
+							card.setCardSize("orig");
+							//card.setCardSize("small");
 						}
 					}
 				}  
@@ -1406,7 +1408,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					card = player.carts[i].cards.playingCards[k];
 					card.selected = false;
 					card.borderColor = cardColor(card);
-					card.setCardSize("small");
+					card.setCardSize("orig");
+					//card.setCardSize("small");
 				}
 			}
 		}

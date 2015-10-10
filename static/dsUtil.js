@@ -202,7 +202,8 @@ cartCardChecked = function(card) {
 		card.image = card.imageChecked;
 	}
 	else {	
-		card.image = card.imageSmall;
+		//card.image = card.imageSmall;
+		card.image = card.imageOrig;
 	}
 }	
 	
@@ -416,7 +417,8 @@ updatePlayerCarts = function(game, player, playerCart, dataCart) {
 updatePlayerCartItems = function(game, playerCart, number) {
 	for (var i = 0; i < game.itemHolders.playingCards.length; ++i)  {
 		var card = game.itemHolders.playingCards[i];
-		card.setCardSize("small");
+		//card.setCardSize("small");
+		card.setCardSize("orig");
 			if(card.number === number) {
 				playerCart.cards.addCardc(card);
 				break;
