@@ -38,7 +38,9 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	$scope.showHideQuestVar = "Show";
 	$scope.playSounds = true;
 	$scope.soundPlaying = "";
-	$scope.playMusic = true;
+	$scope.musicPlaying = "";
+	$scope.musicText = "Pause";
+	$scope.playMusic = false;
 	$scope.autoSelectHand = true;
 	$scope.autoSelectCart = true;
 	$scope.autoSelectQuest = true;
@@ -102,7 +104,45 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 
 	$scope.musicCheck = function () {
 		$scope.playMusic = !$scope.playMusic;
+		if(!$scope.playMusic) {
+			pauseMusic("true");
+			$scope.musicText = "Play";
+		}
 	}	
+	
+	$scope.playPauseMusicClick = function () {
+		if ($scope.playMusic) {
+			pauseMusic("false");
+		}
+		else {
+			pauseMusic("true");
+		}
+	}	
+	
+	
+	pauseMusic = function(bool) {
+		if ($scope.musicPlaying != "") {
+			var audio = document.getElementById($scope.musicPlaying);
+			if (bool) {
+				audio.pause($scope.musicPlaying);
+				$scope.musicPlaying = "";
+				$scope.musicText = "Play";
+				}
+			else {
+				if(audio.paused) {
+					audio.play();
+					$scope.musicText = "Pause";
+					$scope.playMusic = true;
+				}
+
+			}
+		}
+		else {
+			playMusic($scope.music[0].name);
+			$scope.musicText = "Pause";
+			$scope.playMusic = true;
+		}
+	}
 	
 	$scope.autoSelectCartCheck = function () {
 		$scope.autoSelectCart = !$scope.autoSelectCart;
@@ -113,11 +153,11 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		$scope.runLocalHost != $scope.runLocalHost;
 		if (!$scope.runLocalHost) {
 			$scope.siteUrl = 'https://dungeonshopper.appspot.com/'
-			listGames();
+			setupNoGame();
 		}
 		else {
 			$scope.siteUrl = '';
-			listGames();
+			setupNoGame();
 		}
 	}	
 
@@ -147,11 +187,11 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		$scope.displayMode = "nogame";
 		$scope.playerName="Player";
 		$scope.sounds = prepSounds();
-		$scope.adj = setAdj();
+		$scope.music = prepMusic();
 		$scope.game=null;
 		hideImages($scope);
 		listGames();
-		play($scope.sounds[2].name);
+		playMusic($scope.music[0].name);
 	}	
 
 	$scope.joinGame = function(gameKey, playerName) {
@@ -214,8 +254,13 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	//plays music files
 	playMusic = function (musicId) {
 		if($scope.playMusic) {
+			$scope.musicPlaying = musicId;
 			var audio = document.getElementById(musicId);
 			audio.play();
+			if (typeof audio.loop == 'boolean')
+			{
+				audio.loop = true;
+			}
 		}
 	};
 	
@@ -1027,11 +1072,13 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		play($scope.sounds[9].name);
 	}
 	
+	//this logs one time when user clicks complete event to the log the player.lastEvent
 	$scope.playerCompletedEvent = function() {
 		var eventCompletedText = getEventCompletedText($scope.game, $scope.activePlayer, $scope.activePlayer.lastEvent);
 		$scope.game.playersLog.push(new PlayersLog($scope.game.playersLog.length, $scope.activePlayer.name, eventCompletedText));
-		completeEventDealQuest($scope.activeEventId);
 		$scope.clickedCompleteEvent = true;
+		completeEventDealQuest($scope.activeEventId);
+
 	}
 
 	
@@ -1436,7 +1483,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				if (event.prepWhatItems1.length > 0) {
 					parr1 = parseToArray(event.prepWhatItems1);
 					for (var c = 0; c < parr1.length; ++c) {
-						prep1 += getCardName(parr1[c]) + " from their " + $scope.adj[$scope.x] + " " + event.prepFromWhere1;
+						prep1 += getCardName(parr1[c]) + " from their " + getAdj[$scope.x] + " " + event.prepFromWhere1;
 						card = game.itemMarketHolders.playingCards[parr1[c]-1];
 						player.lastEvent.images.addCardc(card);						
 						if(c+1 < event.prepWhatItems1.length) {
@@ -1450,7 +1497,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				if (event.whatItems1.length > 0) {
 					arr1 = parseToArray(event.whatItems1);
 					for (var c = 0; c < arr1.length; ++c) {
-						text1 += getCardName(arr1[c]) + " from their " + $scope.adj[$scope.y] + " " + event.fromWhere1;
+						text1 += getCardName(arr1[c]) + " from their " + getAdj[$scope.y] + " " + event.fromWhere1;
 						card = game.itemMarketHolders.playingCards[arr1[c]-1];
 						player.lastEvent.images.addCardc(card);						
 						if(c+1 < event.whatItems1.length) {
@@ -1462,7 +1509,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				if (event.whatItems2.length > 0) {
 					arr2 = parseToArray(event.whatItems2);
 					for (var c = 0; c < arr2.length; ++c) {
-						text2 += getCardName(arr2[c]) + " from their " + $scope.adj[$scope.z] + " " +  event.fromWhere2;
+						text2 += getCardName(arr2[c]) + " from their " + getAdj[$scope.z] + " " +  event.fromWhere2;
 						card = game.itemMarketHolders.playingCards[arr2[c]-1];
 						player.lastEvent.images.addCardc(card);						
 						if(c+1 < event.whatItems2.length) {
@@ -1550,7 +1597,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 						eventCompletedText = player.name + " defeated the Orcs!";
 					}
 					else {
-						eventCompletedText = "Orcs have destroyed " + player.name +  "'s " + $scope.adj[$scope.w] + " wheelbarrow.  ";
+						eventCompletedText = "Orcs have destroyed " + player.name +  "'s " + getAdj[$scope.w] + " wheelbarrow.  ";
 						if(event.prepWhatItems1.length > 0) {
 							eventCompletedText += player.name + " received " + parseFromArrayIntoNames(parr1) + " from their destroyed cart!  ";
 						}
@@ -1584,7 +1631,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					if (event.whatItems1.length > 0) {
 						arr1 = parseToArray(event.whatItems1.length);
 						for (var c = 0; c < arr1.length; ++c) {
-							move1 += " " + getCardName(arr1[c]) + " from their " + $scope.adj[$scope.y] + " " + event.fromWhere1;
+							move1 += " " + getCardName(arr1[c]) + " from their " + getAdj[$scope.y] + " " + event.fromWhere1;
 							if(c+1 < event.whatItems.length) {
 								move1 += " and ";
 							}
@@ -1599,7 +1646,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 								eventCompletedText += " and ";
 							}
 						}
-						eventCompletedText += " to their " + $scope.adj[$scope.w] + " " + event.moveDest + ".";
+						eventCompletedText += " to their " + getAdj[$scope.w] + " " + event.moveDest + ".";
 					}
 					break;
 				case 18:
@@ -1887,7 +1934,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		gameFactory.completeEventDealQuest($scope.siteUrl, $scope.gameKey, $scope.myId, eventId, processGameStateCallback, processGameStateErrorCallback);
 	}
 
-	function completeEvent(eventId, gold, items, what1, where1, what2, where2, dest1) {
+	function completeEvent(eventId, playerId, gold, items, what1, where1, what2, where2, dest1) {
 		$scope.loadingData=true;
 		gameFactory.completeEvent($scope.siteUrl, $scope.gameKey, $scope.myId, eventId, gold, items, what1, where1, what2, where2, dest1, processGameStateCallback, processGameStateErrorCallback);
 	}

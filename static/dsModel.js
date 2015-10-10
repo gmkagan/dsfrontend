@@ -30,6 +30,13 @@ var Sound = function (id, name) {
 	this.name = name;
 }
 
+var Music = function (id, name) {
+	this.id = id;
+	var soundBase = "./sounds/";
+	this.soundFile = soundBase + name + ".mp3";
+	this.name = name;
+}
+
 var QuestReady = function (items, questCard, cartId, questIndex) {
 	this.items = items;
 	this.questCard = questCard;

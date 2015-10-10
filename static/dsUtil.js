@@ -42,6 +42,14 @@ var prepSounds = function() {
 	return sounds;
 }
 
+
+var prepMusic = function() {
+	var music = [];
+	music.push(new Music(0,"ambiance"));
+	return music;
+}
+
+
 hideImages = function(scope) {
 	if(scope.hideImagesBool) {
 		scope.questImageBase = scope.imagePath + "xxx";
@@ -164,7 +172,7 @@ getCardName = function (number) {
 	return name;
 }
 
-setAdj = function(i) {
+getAdj = function(i) {
 	var adj = [];
 	adj[0] = "dope";
 	adj[1] = "shaky";
@@ -177,7 +185,7 @@ setAdj = function(i) {
 	adj[8] = "rugged";
 	adj[9] = "powerhouse";
 	adj[10] = "secure";
-	return adj;
+	return adj[i];
 }
 
 playerCardChecked = function(card) {

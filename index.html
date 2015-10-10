@@ -3,9 +3,10 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="dsApp">
 
 <head>
+<meta charset="utf-8"/>
 <title>Dungeon Shopper</title>
-    <meta charset="utf-8" />
-
+ <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+ <meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, user-scalable=no, initial-scale=.51, maximum-scale=0.51, minimum-scale=0.51"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.js"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -73,7 +74,7 @@
 	<source src="sounds/buyCart.mp3"></source>
 </audio>
 
-
+<div class="container-fluid">
     <div class="panel panel-info">
 		<div class="panel-heading">
 			<span class="panel-title pull-right">
@@ -114,5 +115,6 @@
 		<div><ng-include src="'static/gameFooter.html'" ></ng-include></div>
 		<div><ng-include src="'static/playerLog.html'"></ng-include></div>
 	</div>
+</div>
 </body>
 </html>
