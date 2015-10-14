@@ -53,15 +53,13 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	$scope.activeCartId = -1;
 
 	//card gui variables
-	$scope.borderPXselected = "border:3px solid red";
-	$scope.borderPX = "border:1px solid black";
-	$scope.borderPXorig = "border:1px solid black";
+	$scope.borderPXselected = "border: 5px solid red;";
+	$scope.borderPX = "border: 1px solid black;";
+	$scope.borderPXorig = "border: 1px solid black;";
 
 	$scope.refresh=false;
 	//control which log items to push
 	$scope.logItemCount = 0;
-	//used for viking event - this allows for Move action to not cost and action during the event
-	//$scope.oneFreeMove = true;
 	$scope.myLastWhatItems1 = null;
 	$scope.myLastFromWhere1 = null;
 	$scope.myLastMoveDest = null;
@@ -346,20 +344,31 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		questClicked.selected = !questClicked.selected;
 		questClicked.borderColor = cardColor(questClicked);
 
-		for (var j = 0; j < game.questsInPlay.playingCards.length; ++j)  {
-			if(j===i){
-				if(questClicked.selected){
-					questClicked.setCardSize("large");
-				}
-				else {
-					questClicked.setCardSize("orig");
-				}
-			}
-			else {
+		
+		if(questClicked.selected === false) {
+			for (var j = 0; j < game.questsInPlay.playingCards.length; ++j)  {
 				var card = game.questsInPlay.playingCards[j];
 				card.selected = false;
 				card.borderColor = cardColor(card);
 				card.setCardSize("orig");
+			}
+		}
+		else {
+			for (var j = 0; j < game.questsInPlay.playingCards.length; ++j)  {
+				if(j===i){
+					if(questClicked.selected){
+						questClicked.setCardSize("orig");
+					}
+					//else {
+					//	questClicked.setCardSize("small");
+					//}
+				}
+				else {
+					var card = game.questsInPlay.playingCards[j];
+					card.selected = false;
+					card.borderColor = cardColor(card);
+					card.setCardSize("small");
+				}
 			}
 		}
 		play($scope.sounds[9].name);
@@ -1894,6 +1903,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			if(questReady.items.length >=3 && $scope.autoSelectHand) {
 				if($scope.displayMode === 'game') {	
 					selectHandCards(questReady.items);
+					
 				}
 			}
 		}

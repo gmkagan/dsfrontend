@@ -20,9 +20,11 @@
 		</tr>
 		<tr>
 			<td>
-				<span ng-repeat="questcard in game.questsInPlay.playingCards track by $index">
-					<questcard ng-show="questcard.level != 4" ng-click="userClickedQuestImage($index)" info="questcard"></questcard>
-				</span>	
+				<!--<div class="zoom_img" >-->
+					<span ng-repeat="questcard in game.questsInPlay.playingCards track by $index">
+						<questcard ng-show="questcard.level != 4" ng-click="userClickedQuestImage($index)" info="questcard"></questcard>
+					</span>	
+				<!--</div>-->
 			</td>
 		</tr>
 		</thead>

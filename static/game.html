@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<td>
-					<div class="right"><ng-include src="'static/marketPlayer.html'"></ng-include></div>
+					<div class="left"><ng-include src="'static/marketPlayer.html'"></ng-include></div>
 				</td>
 			</tr>
 		</thead>
@@ -48,13 +48,13 @@
 	<div>
 		<button ng-show="activePlayer.questsCompleted.playingCards.length > 0" ng-disabled="loadingData===true" class="btn btn-warning" ng-click="showMyCompletedQuestsClick()" >{{showHideQuestVar}} my completed quests?</button>
 	</div>
-
-	<span ng-show="showMyCompletedQuests">
-		<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
-			<img style="{{card.borderColor}}" ng-src="{{questcard.image}}"></img>
+	<!--<div class="zoom_img" >-->
+		<span ng-show="showMyCompletedQuests">
+					<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
+						<questcard ng-show="questcard.level != 4" info="questcard"></questcard>
+					</span>	
 		</span>
-	</span>
-
+		<!--</div>-->
 
 </div>
 <div>	

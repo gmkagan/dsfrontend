@@ -290,6 +290,7 @@ checkIfQuestIsReadyFromCart = function (game, player) {
 	}
 	
 	if (questCanBeCompleted === true) {
+		questFound.selected = true;
 		questFound.borderColor = 'border:10px solid green';
 		questReady.cartId = cartId;
 		questReady.questCard = questFound;

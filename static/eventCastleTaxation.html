@@ -1,40 +1,37 @@
 ﻿<ng-include src="'static/gameEventHeader.html'"></ng-include>
 <div class="container-fluid">
-<div class="panel panel-primary">
-	<ng-include src="'static/playerHeader.html'"></ng-include>		
+	<div class="panel panel-primary">
+		<ng-include src="'static/playerHeader.html'"></ng-include>		
 
-	<br></br>
+		<br></br>
 
-	<div class="row" ng-disabled="loadingData">
-	<div class="col-sm-3" ng-repeat="cart in activePlayer.carts track by $index" >
-			<img  class="tab10" ng-if="cart.active" style="{{cart.borderColor}}" width="{{cart.width}}" height="{{cart.height}}" ng-src="{{cart.image}}" ng-click="userClickedCartImageEvent(cart.id)"></img>
-			<span class="col-sm-1" ng-repeat="card in cart.cards.playingCards track by $index" >
-				<img  style="{{card.borderColor}}" ng-click="userClickedCartItemEvent(cart.id, $index)" ng-src="{{card.image}}"/>
-			</span>
-			<span ng-if="cart.active">
-				<button ng-disabled="loadingData===true" class="btn btn-warning" ng-click="playerDiscardFromCart($index)" ng-if="cart.cardSumSelected > 0 && selectedCartItemsCount===1" >Pay taxes with item(s)? </button>
-			</span>	
-			
+		<div class="row" ng-disabled="loadingData">
+			<div class="col-sm-3" ng-repeat="cart in activePlayer.carts track by $index" >
+				<img  class="tab10" ng-if="cart.active" style="{{cart.borderColor}}" width="{{cart.width}}" height="{{cart.height}}" ng-src="{{cart.image}}" ng-click="userClickedCartImageEvent(cart.id)"></img>
+				<span class="col-sm-1" ng-repeat="card in cart.cards.playingCards track by $index" >
+					<img  style="{{card.borderColor}}" ng-click="userClickedCartItemEvent(cart.id, $index)" ng-src="{{card.image}}"/>
+				</span>
+				
+			</div>
 		</div>
+		<p></p>
+					<div class="container-fluid">
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<td>
+						<div class="left"><ng-include src="'static/cardsEvent.html'"></ng-include></div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="right"><ng-include src="'static/marketEvent.html'"></ng-include></div>
+					</td>
+				</tr>
+			</thead>
+		</table>
 	</div>
-	<p></p>
-				<div class="container-fluid">
-	<table class="table table-condensed">
-		<thead>
-			<tr>
-				<td>
-					<div class="left"><ng-include src="'static/cardsEvent.html'"></ng-include></div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="right"><ng-include src="'static/marketEvent.html'"></ng-include></div>
-				</td>
-			</tr>
-		</thead>
-	</table>
-</div>
-</div>
+	</div>
 
 <h4 class="tab40" ng-show="activePlayer.gold === 0 && totalCardsFound === 0">Event! Castle Taxation - Click Complete Event you poor bum.</h4>
 <h4 class="tab40" ng-show="activePlayer.gold >= 1 && totalCardsFound === 1">Event! Castle Taxation - Select your only item for Castle Tax or pay one gold.</h4>
