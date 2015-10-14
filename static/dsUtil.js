@@ -133,10 +133,10 @@ hideImages = function(scope) {
 getCardName = function (number) {
 	switch (parseInt(number)) {
 	   case 0:
-		   name = "Key";
+		   name = "Ballista";
 		   break;
 		case 1: 
-		   name = "Torch";
+		   name = "Club";
 			break;
 	   case 2:
 		   name = "Shield";
@@ -157,13 +157,13 @@ getCardName = function (number) {
 		   name = "Crossbow";
 		   break;
 	   case 8:
-		   name = "Helmet";
+		   name = "Armor";
 		   break;
 	   case 9:
-		   name = "Staff";
+		   name = "Trebuchet";
 		   break;
 	   case 10:
-		   name = "Key";
+		   name = "Ballista";
 		   break;
 	   default:
 		   name = "Unknown";
@@ -596,15 +596,10 @@ parseFromArrayIntoNames = function(items) {
 			num = items[i];
 		}
 		s += getCardName(num);
-		if(i+2 < items.length) {
-			s+=", ";
-			continue;
-		}
 		if(i+1 < items.length) {
-			s+=" and ";
-			continue;
+			s+=", ";
 		}
-	}
+}
 	return s;
 }
 
