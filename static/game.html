@@ -51,7 +51,7 @@
 	<!--<div class="zoom_img" >-->
 		<span ng-show="showMyCompletedQuests">
 					<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
-						<questcard ng-show="questcard.level != 4" info="questcard"></questcard>
+						<span class="p1" aria-haspopup="true"><img ng-src="{{questcard.imageSmall}}"/><b><img class="large" ng-src="{{questcard.imageOrig}}" /></b></span>
 					</span>	
 		</span>
 		<!--</div>-->

@@ -360,9 +360,10 @@ var checkIfQuestISReadyFromHand = function (game, player, autoSelectHand) {
 
 		if (parseSelectedCardArrayForQuest(quest) === parseSelectedCardArrayForQuest(r) ){
 			questCanBeCompleted = true;
-			questFound.borderColor = 'border:10px solid green';
+			questFound.borderColor = 'border:10px solid green;';
 			questReady.items = r;
 			questReady.questCard = questFound;
+			questReady.index = j;
 
 			return questReady;
 		}

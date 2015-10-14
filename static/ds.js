@@ -53,7 +53,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	$scope.activeCartId = -1;
 
 	//card gui variables
-	$scope.borderPXselected = "border: 5px solid red;";
+	$scope.borderPXselected = 'border: 10px solid green;';
 	$scope.borderPX = "border: 1px solid black;";
 	$scope.borderPXorig = "border: 1px solid black;";
 
@@ -263,6 +263,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		}
 	};
 	
+	
+
 	var cardColor = function(card) {
 		if(card.selected) {
 			return $scope.borderPXselected; //red
@@ -1892,8 +1894,10 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			if(questReady.cartId >= 0 && $scope.autoSelectCart) {
 				$scope.userClickedCartImage(questReady.cartId);
 				if($scope.autoSelectQuest) {
+					//make sure quest is not selected yet
+					var questClicked = game.questsInPlay.playingCards[questReady.index];
+					questClicked.selected = false;
 					$scope.userClickedQuestImage(questReady.index);
-					return;
 				}
 			}
 		}
@@ -1903,7 +1907,13 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			if(questReady.items.length >=3 && $scope.autoSelectHand) {
 				if($scope.displayMode === 'game') {	
 					selectHandCards(questReady.items);
-					
+					if($scope.autoSelectQuest) {
+						//make sure quest is not selected yet
+						var questClicked = game.questsInPlay.playingCards[questReady.index];
+						questClicked.selected = false;
+						$scope.userClickedQuestImage(questReady.index);
+					}
+				
 				}
 			}
 		}
@@ -2002,6 +2012,14 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
             card: '=info'
         },
         templateUrl: 'static/questcard.html?2'
+    };
+}).directive('questcardsmall', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            card: '=info'
+        },
+        templateUrl: 'static/questcardsmall.html?2'
     };
 }).directive('eventcardsmall', function () {
     return {
