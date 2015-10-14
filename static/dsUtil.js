@@ -1,11 +1,16 @@
 var prepEvents = function() {
 	var events = [];
+	var d1 = "Cursed Chambers";
+	var d2 = "Abysmal Pits";
+	var d3 = "Emerald Vault";
+	var d4 = "Dragontooth Lair";
+	var d5 = "Bloodfall Tombs";
 	events.push(new Event(0,"unknown","unknown"));
-	events.push(new Event(1,"BattleOfCastillon","Battle of Castillon"));
-	events.push(new Event(2,"CaptureOfLusignan","Capture of Lusignan"));
-	events.push(new Event(3,"CombatOfTheThirty","Combat of the Thirty"));
-	events.push(new Event(4,"LoireCampaign","Loire Campaign"));
-	events.push(new Event(5,"SiegeOfHarfleur","Siege of Harfleur"));
+	events.push(new Event(1,d3,d3));
+	events.push(new Event(2,d2,d2));
+	events.push(new Event(3,d4,d4));
+	events.push(new Event(4,d1,d1));
+	events.push(new Event(5,d5,d5));
 	events.push(new Event(6,"BarbarianAttack","Barbarian Attack"));
 	events.push(new Event(7,"BrokenItems","Broken Items"));
 	events.push(new Event(8,"CastleTaxation","Castle Taxation"));
@@ -133,10 +138,10 @@ hideImages = function(scope) {
 getCardName = function (number) {
 	switch (parseInt(number)) {
 	   case 0:
-		   name = "Ballista";
+		   name = "Key";
 		   break;
 		case 1: 
-		   name = "Club";
+		   name = "Torch";
 			break;
 	   case 2:
 		   name = "Shield";
@@ -157,13 +162,13 @@ getCardName = function (number) {
 		   name = "Crossbow";
 		   break;
 	   case 8:
-		   name = "Armor";
+		   name = "Helmet";
 		   break;
 	   case 9:
-		   name = "Trebuchet";
+		   name = "Staff";
 		   break;
 	   case 10:
-		   name = "Ballista";
+		   name = "Key";
 		   break;
 	   default:
 		   name = "Unknown";

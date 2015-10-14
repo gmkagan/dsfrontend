@@ -27,6 +27,19 @@ transition: opacity 1s;
 span.p1:hover b {top:-300px; left:110px; opacity:1;}
 
 
+span.p2 {display:block; text-decoration:none; background:#fff; border:0; margin:10px; display:inline-block; position:relative;}
+span.p2 img {display:block; border:1px solid #aaa;}
+span.p2:hover {text-decoration:none; background:#8c97a3; color:#000; z-index:500;}
+span.p2 b {display:block; position:absolute; left:-9999px; padding:20px; opacity:0; background:#323232; border:1px solid #ddd; z-index:100;
+-webkit-transition: opacity 1s;
+-moz-transition: opacity 1s;
+-o-transition: opacity 1s;
+transition: opacity 1s;
+}
+span.p2:hover b {top:-200px; left:110px; opacity:1;}
+
+
+
 .splashImg {
 	width: 300px;
 	height: auto;
