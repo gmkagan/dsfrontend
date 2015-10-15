@@ -1,6 +1,6 @@
 ﻿
 
-.body         { padding-top:50px; }
+.body         { padding-top:10px; }
 
 .zoom_img img:hover{
 -moz-transform:scale(2); 
@@ -95,12 +95,12 @@ span.p2:hover b {top:-200px; left:110px; opacity:1;}
 	padding: 10px;
 }
 .right{
- height:150px;
+ height:120px;
  float:right;
  background:white;
 }
 .left{
- height:150px;
+ height:120px;
  background:white;
  float:left;
 }
