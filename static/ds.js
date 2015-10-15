@@ -1957,7 +1957,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		gameFactory.completeEventDealQuest($scope.siteUrl, $scope.gameKey, $scope.myId, eventId, processGameStateCallback, processGameStateErrorCallback);
 	}
 
-	function completeEvent(eventId, playerId, gold, items, what1, where1, what2, where2, dest1) {
+	function completeEvent(eventId, gold, items, what1, where1, what2, where2, dest1) {
 		$scope.loadingData=true;
 		gameFactory.completeEvent($scope.siteUrl, $scope.gameKey, $scope.myId, eventId, gold, items, what1, where1, what2, where2, dest1, processGameStateCallback, processGameStateErrorCallback);
 	}
