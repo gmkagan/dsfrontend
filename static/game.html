@@ -33,17 +33,17 @@
 </table>
 	
 <p></p>
-<div>
-<button ng-show="activePlayer.questsCompleted.playingCards.length > 0" ng-disabled="loadingData===true" class="btn btn-warning" ng-click="showMyCompletedQuestsClick()" >{{showHideQuestVar}} my completed quests?</button>
-</div>
-<div ng-show="showMyCompletedQuests">
-	<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
-		<span class="p2" aria-haspopup="true"><img ng-src="{{questcard.imageSmall}}"/><b><img class="large" ng-src="{{questcard.imageLarge}}" /></b></span>
-	</span>	
-</div>
+<div class = "tab10">
+	<button ng-show="activePlayer.questsCompleted.playingCards.length > 0" ng-disabled="loadingData===true" class="btn btn-success" ng-click="showMyCompletedQuestsClick()" >{{showHideQuestVar}} my completed quests?</button>
 
-<div>	
-	<button ng-show="numberOfPlayers > 1"class="btn btn-warning" ng-click="showOtherPlayerDataClick()" >{{showHideVar}} Other Player Info?</button>
+	<div ng-show="showMyCompletedQuests">
+		<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
+			<span class="p2" aria-haspopup="true"><img ng-src="{{questcard.imageSmall}}"/><b><img class="large" ng-src="{{questcard.imageLarge}}" /></b></span>
+		</span>	
+	</div>
+
+
+	<button ng-show="numberOfPlayers > 1"class="btn btn-primary" ng-click="showOtherPlayerDataClick()" >{{showHideVar}} Other Player Info?</button>
 	<div ng-show="numberOfPlayers > 1" ng-include src="'static/otherPlayers.html'" ></ng-include></div>
 </div>
 

@@ -1,52 +1,54 @@
-<div class="col-xs-12 col-sm-10 col-sm-offset-1" ng-show = "showOptionsClick">
-	<form>
+<div class="panel panel-info" ng-show = "showOptionsClick"> 
+	<div class="panel-heading">  
 		
-		<!-- NAME INPUT -->
-		<div class="form-group">
-			<ul>
-				<!--<li class="checkbox">
-					<input type="checkbox" ng-click="debugCheck()" ng-model="debug"> Debug mode
-				</li>
-				<li class="checkbox">
-					<input type="checkbox" ng-click="hideImagesCheck()" ng-model="hideImagesBool"> Hide Images?
-				</li>-->
-				<li class="checkbox">
-					<input type="checkbox" ng-click="runLocalHostCheck()" ng-model="runLocalHost"> Run Localhost?  Currently running on 				
-					<span ng-switch on="runLocalHost">
-						<span ng-switch-when="true">LocalHost</span>
-						<span ng-switch-default>{{siteUrl}}</span>
-					</span>
-					</input>
-				</li>
-				<li class="checkbox">
-					<input type="checkbox" ng-click="soundsCheck()" ng-model="playSounds"> Sounds On?
-				</li>
-				<li class="checkbox">
-					<input type="checkbox" ng-click="musicCheck()" ng-model="playMusic"> Music On?
-					<button class="btn btn-info" ng-click="playPauseMusicClick()">{{musicText}}</button>
-				</li>						
-				<li class="checkbox">
-					<input type="checkbox" ng-click="autoSelectCartCheck()" ng-model="autoSelectCart"> Auto-select cart items when quest(s) can be completed?
-				</li>
-				<li class="checkbox">
-					<input type="checkbox" ng-click="autoSelectHandCheck()" ng-model="autoSelectHand"> Auto-select hand items for first quest match?
-				</li>
-				<li class="checkbox">
-					<input type="checkbox" ng-click="autoSelectQuestCheck()" ng-model="autoSelectQuest"> Auto-select first quest match when quest(s) can be completed?
-				</li>
-				<li class="checkbox">
-					<input type="checkbox" ng-click="autoPassCheck()" ng-model="autoPass"> Auto-pass when out of gold?
-				</li>						
-			</ul>
+			<form>
+				<!-- NAME INPUT -->
+				<div class="form-group">
+					<ul>
+						<!--<li class="checkbox">
+							<input type="checkbox" ng-click="debugCheck()" ng-model="debug"> Debug mode
+						</li>
+						<li class="checkbox">
+							<input type="checkbox" ng-click="hideImagesCheck()" ng-model="hideImagesBool"> Hide Images?
+						</li>
+						<li class="checkbox">
+							<input type="checkbox" ng-click="runLocalHostCheck()" ng-model="runLocalHost"> Run Localhost?  Currently running on 				
+							<span ng-switch on="runLocalHost">
+								<span ng-switch-when="true">LocalHost</span>
+								<span ng-switch-default>{{siteUrl}}</span>
+							</span>
+							</input>
+						</li>-->
+						<li class="checkbox">
+							<input type="checkbox" ng-click="soundsCheck()" ng-model="playSounds"> Sounds On? </input>
+						</li>
+						<li class="checkbox">
+							<input id="check1" type="checkbox" ng-click="musicCheck()" ng-model="playMusic"> Music On? </input>
+							<button class="btn btn-info" ng-click="playPauseMusicClick()">{{musicText}}</button>
+						</li>						
+						<li class="checkbox">
+							<input type="checkbox" ng-click="autoSelectCartCheck()" ng-model="autoSelectCart"> Auto-select cart items when quest(s) can be completed? </input>
+						</li>
+						<li class="checkbox">
+							<input type="checkbox" ng-click="autoSelectHandCheck()" ng-model="autoSelectHand"> Auto-select hand items for first quest match? </input>
+						</li>
+						<li class="checkbox">
+							<input type="checkbox" ng-click="autoSelectQuestCheck()" ng-model="autoSelectQuest"> Auto-select first quest match when quest(s) can be completed? </input>
+						</li>
+						<li class="checkbox">
+							<input type="checkbox" ng-click="autoPassCheck()" ng-model="autoPass"> Auto-pass when out of gold? </input>
+						</li>						
+					</ul>
+				</div>
+					
+				<!-- =============================================== -->
+				<!-- ALL OUR CHECKBOXES AND RADIO BOXES WILL GO HERE -->
+				<!-- =============================================== -->
+				
+				<!-- SUBMIT BUTTON (DOESNT DO ANYTHING) -->
+				<!--<button class="btn btn-danger btn-lg" ng-click="newGame(1, 'Gary')">Start 1 player test Game</button>  -->   
+				<!--<button class="btn btn-primary" ng-click="joinGame(playerName, playerId)" ng-cloak>Join Game</button>-->
+					
+			</form>
 		</div>
-			
-		<!-- =============================================== -->
-		<!-- ALL OUR CHECKBOXES AND RADIO BOXES WILL GO HERE -->
-		<!-- =============================================== -->
-		
-		<!-- SUBMIT BUTTON (DOESNT DO ANYTHING) -->
-		<!--<button class="btn btn-danger btn-lg" ng-click="newGame(1, 'Gary')">Start 1 player test Game</button>  -->   
-		<!--<button class="btn btn-primary" ng-click="joinGame(playerName, playerId)" ng-cloak>Join Game</button>-->
-			
-	</form>
-</div>
+	</div>

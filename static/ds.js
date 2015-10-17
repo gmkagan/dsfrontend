@@ -112,10 +112,12 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	
 	$scope.playPauseMusicClick = function () {
 		if ($scope.playMusic) {
-			pauseMusic("false");
+			pauseMusic("true");
 		}
 		else {
-			pauseMusic("true");
+			$scope.playMusic = false;
+			$scope.musicCheck();
+			pauseMusic("false");
 		}
 	}	
 	
@@ -133,15 +135,18 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					$scope.playMusic = true;
 					audio.play();
 					$scope.musicText = "Pause";
+					document.getElementById("check1").checked = true;
 				}
 
 			}
 		}
 		else {
-			$scope.playMusic = true;
-			playMusic($scope.music[0].name);
-			$scope.musicText = "Pause";
-
+			if ($scope.playMusic ) {
+				$scope.playMusic = true;
+				document.getElementById("check1").checked = true;
+				playMusic($scope.music[0].name);
+				$scope.musicText = "Pause";
+			}
 		}
 	}
 	
@@ -432,11 +437,14 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			return;
 			}
 			
-		var selectedCards = getSelectedCards(cart.cards, true);
-		var questCards = getSelectedCardArrayForQuest(cart.cards);
-		var items =  new Array(questClicked.item1, questClicked.item2, questClicked.item3, questClicked.item4, questClicked.item5);
+		var selectedCards = getSelectedCardArrayForQuest(cart.cards);
+		//var selectedCards = getSelectedCards(cart.cards, true);
+		//var questCards = getSelectedCardArrayForQuest(cart.cards);
+		var items =  getSelectedCardArray(new Array(questClicked.item1, questClicked.item2, questClicked.item3, questClicked.item4, questClicked.item5));
 		
-		if (parseSelectedCardArrayForQuest(questCards) === parseSelectedCardArrayForQuest(items) ){
+		var a = parseSelectedCardArrayForQuest(selectedCards);
+		var b = parseSelectedCardArrayForQuest(items);
+		if (a === b ){
 			questCanBeCompleted = true;
 		}
 
@@ -444,8 +452,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			var r =  confirm("Confirm purchase from " + cart.name +"?");
 			if(r===true) {
 				//check if player completed quest and move it to their completed quests
-				game.questsInPlay.setCardSize("orig");
-				completeQuest(selectedCards, 'cart' + cart.id);
+				//game.questsInPlay.setCardSize("orig");
+				completeQuest(parseFromArrayToString(selectedCards), 'cart' + cart.id);
 				questClicked.selected = false;
 				resetAllSelectedCards(player);
 			}
@@ -1206,11 +1214,11 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					if(id==="items") {
 						gold = 0;
 						if(totalCards >= 2 && totalCardsSelected < 2) {
-							alert("You must select 2 items for taxes.");
+							alert("You must select 2 items.");
 							return;
 						}
 						if(totalCards === 1 && totalCardsSelected===0) {
-							alert("You must select your only card item for taxes.");
+							alert("You must select your only card item.");
 							return;
 						}
 						if(totalCards >= 1 && (totalCardsSelected===1 || totalCardsSelected===2) ){
@@ -1244,7 +1252,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 							break;							
 						}
 						else{
-							alert("You do not have enough gold for taxation, you must lose items.");
+							alert("You do not have enough gold, you must lose items.");
 							return;
 						}
 					}
@@ -1261,12 +1269,12 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					}
 
 					if(totalCartCards > 0 && totalCartCardsSelected != 1) {
-						alert("Select one cart item to lose to the Goblins.");
+						alert("Select one cart item to lose.");
 						return;
 					}
 					//can only give up one
 					if(totalCartCardsSelected > 1) {
-						alert("You may only select one cart item to lose to the Goblins.");
+						alert("You may only select one cart item to lose.");
 						return;
 					}
 					
@@ -1343,7 +1351,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 						
 					//player does have 1,2 or 3
 					if(playerCardCountSel != 1 || playerCardsSumSelected > 3) {
-						alert("Select one item - Club, Shield or Hammer to lose.");
+						alert("Select one item - " + getCardName(1) + ", " + getCardName(2) + " or " + getCardName(3) + " to lose.");
 						return;
 					}
 					
@@ -1741,6 +1749,33 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		$scope.otherPlayers = [];		
 		$scope.game.players = [];
 		
+		$scope.itemsCountRemaining = data.itemsCountRemaining;
+		$scope.questsCountRemaining = data.questsCountRemaining;
+		$scope.discardsCount = data.discardsCount;
+		
+		game.questsInPlay = new cardSet();
+		game.marketDeck = new cardSet();
+		game.marketDeckInTrade = new cardSet();
+		game.marketDeckInTrade.createBlankMarket($scope.blankMarketImageBase);
+		//setTradeCounts(game.marketDeckInTrade);
+		
+		
+        for (var i = 0; i < data.market.length; ++i) {   
+			dealNumberToMarket(game, data.market[i]);	
+		}
+		setMarketCounts(game);
+
+        for (var i = 0; i < data.questsInPlay.length; ++i) {   
+			dealQuestCard(game, data.questsInPlay[i].items, data.questsInPlay[i].level, data.questsInPlay[i].type);
+			var card = game.questsInPlay.playingCards[i];
+			card.borderColor = cardColor(card);
+		}
+		game.questsInPlay.setCardSize("orig");
+
+		if (data.lastDiscarded != null) {
+			updateDiscardPile(game, data.lastDiscarded);	
+		}
+		
 		//current player
 		var p=0;
 		game.players.push(new Player(game, $scope.myId, data.name));
@@ -1797,77 +1832,54 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			game.players.push(new Player(game, data.otherPlayers[z].playerId, data.otherPlayers[z].name));
 
 			var len = game.players.length - 1;
-
-			game.players[len].cards = new cardSet();
-			game.players[len].questsCompleted =  new cardSet();
-			game.players[len].gold = data.otherPlayers[z].gold;
-			game.players[len].bonus = data.otherPlayers[z].bonus;
-			game.players[len].turns = data.otherPlayers[z].turns;
-			game.players[len].vp = data.otherPlayers[z].points;
-			game.players[len].maxHand = data.otherPlayers[z].maxHand;
+			var otherPlayer = game.players[len];
+			otherPlayer.cards = new cardSet();
+			otherPlayer.questsCompleted =  new cardSet();
+			otherPlayer.gold = data.otherPlayers[z].gold;
+			otherPlayer.bonus = data.otherPlayers[z].bonus;
+			otherPlayer.turns = data.otherPlayers[z].turns;
+			otherPlayer.vp = data.otherPlayers[z].points;
+			otherPlayer.maxHand = data.otherPlayers[z].maxHand;
 			
 			for (var i = 0; i < data.otherPlayers[z].hand.length; ++i) {   
-				//dealNumberToPlayer(game, game.players[len], data.otherPlayers[z].hand[i]);	
-				dealNumberToPlayer(game, $scope.game.players[len], -1);	
+				//dealNumberToPlayer(game, otherPlayer, data.otherPlayers[z].hand[i]);	
+				dealNumberToPlayer(game, otherPlayer, -1);	
 			}
 
 			//populate carts
 			for (var c = 0; c < data.carts.length; ++c) {   
-				game.players[len].carts[c].cards =  new cardSet();
-				updatePlayerCarts(game, $scope.game.players[len], $scope.game.players[len].carts[c], data.otherPlayers[z].carts[c]);	
+				otherPlayer.carts[c].cards =  new cardSet();
+				updatePlayerCarts(game, otherPlayer, otherPlayer.carts[c], data.otherPlayers[z].carts[c]);	
 			}
 			
+			checkOtherPlayerCartsForQuests(game, otherPlayer);
+			
 			for (var q = 0; q < data.otherPlayers[z].questsCompleted.length; ++q) {   
-				dealQuestsCompleted(game, game.players[len].questsCompleted, data.otherPlayers[z].questsCompleted[q].items);
+				dealQuestsCompleted(game, otherPlayer.questsCompleted, data.otherPlayers[z].questsCompleted[q].items);
 			}
-			game.players[len].questsCompleted.setCardSize("small");
-			game.players[len].lastEvent = null;
+			otherPlayer.questsCompleted.setCardSize("small");
+			otherPlayer.lastEvent = null;
 			var events = prepEvents();
 			if (data.otherPlayers[z].curEvent.length > 0  && data.gameMode != "game") {
 				eventFound = data.otherPlayers[z].curEvent.length - 1;
 				var eventCopy = events[data.otherPlayers[z].curEvent[eventFound].eventId];
-				game.players[len].lastEvent = eventCopy;
-				game.players[len].lastEvent.whatItems1 = data.otherPlayers[z].curEvent[eventFound].whatItems1;
-				game.players[len].lastEvent.whatItems2 = data.otherPlayers[z].curEvent[eventFound].whatItems2;
-				game.players[len].lastEvent.fromWhere1 = data.otherPlayers[z].curEvent[eventFound].fromWhere1;
-				game.players[len].lastEvent.fromWhere2 = data.otherPlayers[z].curEvent[eventFound].fromWhere2;
-				game.players[len].lastEvent.moveDest = data.otherPlayers[z].curEvent[eventFound].moveDest;
-				game.players[len].lastEvent.prepWhatItems1 = data.otherPlayers[z].curEvent[eventFound].prepWhatItems1;
-				game.players[len].lastEvent.prepFromWhere1 = data.otherPlayers[z].curEvent[eventFound].prepFromWhere1;
-				game.players[len].lastEvent.prepMoveDest = data.otherPlayers[z].curEvent[eventFound].prepMoveDest;
-				game.players[len].lastEvent.gold = data.otherPlayers[z].curEvent[eventFound].gold;
-				game.players[len].lastEvent.itemsCount = data.otherPlayers[z].curEvent[eventFound].itemsCount;
-				game.players[len].lastEvent.eventCompletedText = getEventCompletedText(game, game.players[len], game.players[len].lastEvent);
+				otherPlayer.lastEvent = eventCopy;
+				otherPlayer.lastEvent.whatItems1 = data.otherPlayers[z].curEvent[eventFound].whatItems1;
+				otherPlayer.lastEvent.whatItems2 = data.otherPlayers[z].curEvent[eventFound].whatItems2;
+				otherPlayer.lastEvent.fromWhere1 = data.otherPlayers[z].curEvent[eventFound].fromWhere1;
+				otherPlayer.lastEvent.fromWhere2 = data.otherPlayers[z].curEvent[eventFound].fromWhere2;
+				otherPlayer.lastEvent.moveDest = data.otherPlayers[z].curEvent[eventFound].moveDest;
+				otherPlayer.lastEvent.prepWhatItems1 = data.otherPlayers[z].curEvent[eventFound].prepWhatItems1;
+				otherPlayer.lastEvent.prepFromWhere1 = data.otherPlayers[z].curEvent[eventFound].prepFromWhere1;
+				otherPlayer.lastEvent.prepMoveDest = data.otherPlayers[z].curEvent[eventFound].prepMoveDest;
+				otherPlayer.lastEvent.gold = data.otherPlayers[z].curEvent[eventFound].gold;
+				otherPlayer.lastEvent.itemsCount = data.otherPlayers[z].curEvent[eventFound].itemsCount;
+				otherPlayer.lastEvent.eventCompletedText = getEventCompletedText(game, otherPlayer, otherPlayer.lastEvent);
 			}
-			$scope.otherPlayers[z] = game.players[len];
+			$scope.otherPlayers[z] = otherPlayer;
 		}
 	
-		$scope.itemsCountRemaining = data.itemsCountRemaining;
-		$scope.questsCountRemaining = data.questsCountRemaining;
-		$scope.discardsCount = data.discardsCount;
-		
-		game.questsInPlay = new cardSet();
-		game.marketDeck = new cardSet();
-		game.marketDeckInTrade = new cardSet();
-		game.marketDeckInTrade.createBlankMarket($scope.blankMarketImageBase);
-		//setTradeCounts(game.marketDeckInTrade);
-		
-		
-        for (var i = 0; i < data.market.length; ++i) {   
-			dealNumberToMarket(game, data.market[i]);	
-		}
-		setMarketCounts(game);
 
-        for (var i = 0; i < data.questsInPlay.length; ++i) {   
-			dealQuestCard(game, data.questsInPlay[i].items, data.questsInPlay[i].level, data.questsInPlay[i].type);
-			var card = game.questsInPlay.playingCards[i];
-			card.borderColor = cardColor(card);
-		}
-		game.questsInPlay.setCardSize("orig");
-
-		if (data.lastDiscarded != null) {
-			updateDiscardPile(game, data.lastDiscarded);	
-		}
 		
 		var log = [];
 		log = data.playerLog;
@@ -1907,6 +1919,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			return;
 		}
 
+		
 		$scope.loadingData=false;
 		var questReady = checkIfQuestIsReadyFromCart(game, player);
 		if(questReady.index != undefined) {
@@ -1918,6 +1931,8 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					questClicked.selected = false;
 					$scope.userClickedQuestImage(questReady.index);
 					$scope.aQuestIsReadyCart = true;
+                    //always return if a quest is ready.  no autopass no check from hand
+					return;
 				}
 			}
 		}
@@ -1938,6 +1953,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				}
 			}
 		}
+
 		
 		//dont autopass in the middle of an event or if you can complete a quest
 		if($scope.displayMode === 'game' ) {

@@ -274,6 +274,12 @@ checkIfQuestIsReadyFromCart = function (game, player) {
 	var questReady = {};
 	
 	for (var i = 0; i < player.carts.length; ++i) {
+		if(!player.carts[i].active) {
+			continue;
+		}
+		if(player.carts[i].cards.playingCards.length < 3) {
+			continue;
+		}
 		if(questCanBeCompleted === true){
 				break;
 			}
@@ -283,9 +289,10 @@ checkIfQuestIsReadyFromCart = function (game, player) {
 			if(questFound.level===4) {
 				continue;
 			}
-			var items =  new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5);
-			
-			if (parseSelectedCardArrayForQuest(selectedCards) === parseSelectedCardArrayForQuest(items) ){
+			var items =   getSelectedCardArray(new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5));
+			var a = parseSelectedCardArrayForQuest(selectedCards);
+			var b = parseSelectedCardArrayForQuest(items);
+			if (a === b ){
 				questCanBeCompleted = true;
 				var cartWithItems = player.carts[i].cards;
 				cartId = i;
@@ -308,6 +315,55 @@ checkIfQuestIsReadyFromCart = function (game, player) {
 	
 	return questReady;
 }
+
+
+
+function checkOtherPlayerCartsForQuests (game, player) {
+	var questinProgress = false;
+	var cartId = -1;
+	var questIndex = -1;
+	var questAlmostReady = {};
+	
+	for (var i = 0; i < player.carts.length; ++i) {
+		if(!player.carts[i].active) {
+			continue;
+		}
+		if(player.carts[i].cards.playingCards.length  < 2) {
+			continue;
+		}
+		var selectedCards = getSelectedCardArrayForQuest(player.carts[i].cards);
+		for (var j = 0; j < game.questsInPlay.playingCards.length; ++j) {
+			var questFound = game.questsInPlay.playingCards[j];
+			if(questFound.level===4) {
+				continue;
+			}
+			var quest =  getSelectedCardArray(new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5));
+			
+
+			//for(var k = quest.length - 1; k >= 0; k--) {
+			//	if(quest[k] === 0) {
+			//	   quest.splice(k, 1);
+			//	}
+			//}						
+						
+			var r = getIntersect(selectedCards, quest);
+
+
+			if (r.length >= 2 ){
+				questinProgress = true;
+				questFound.borderColor = 'border:5px solid red;';
+				//questAlmostReady.items = r;
+				//questAlmostReady.questCard = questFound;
+				//questAlmostReady.index = j;
+
+				//return questAlmostReady;
+			}
+
+		}
+	}
+	
+}
+
 
 function getIntersect(hand, quest) {
 			//as matches are found in quest, multiply by -1 so they don't get selected twice
@@ -354,18 +410,21 @@ var checkIfQuestISReadyFromHand = function (game, player, autoSelectHand) {
 		if(questFound.level===4) {
 			continue;
 		}
-		var quest = new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5);
+		var quest = getSelectedCardArray(new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5));
 
-		for(var i = quest.length - 1; i >= 0; i--) {
-			if(quest[i] === 0) {
-			   quest.splice(i, 1);
-			}
-		}						
+		
+//		getSelectedCardArray(quest);
+//		for(var i = quest.length - 1; i >= 0; i--) {
+//			if(quest[i] === 0) {
+//			   quest.splice(i, 1);
+//			}
+//		}						
 					
 		var r = getIntersect(hand, quest);
 
-
-		if (parseSelectedCardArrayForQuest(quest) === parseSelectedCardArrayForQuest(r) ){
+		var a = parseSelectedCardArrayForQuest(quest);
+		var b = parseSelectedCardArrayForQuest(r);
+		if (a === b){
 			questCanBeCompleted = true;
 			questFound.borderColor = 'border:10px solid green;';
 			questReady.items = r;
@@ -379,13 +438,31 @@ var checkIfQuestISReadyFromHand = function (game, player, autoSelectHand) {
 	return questReady;
 }
 
+
+//returns card in an array
+getSelectedCardArray = function(items){
+	var arr = [];
+	for (var i = 0; i < 5; ++i)  {
+		var num = items[i];
+		if(num===0) {
+			continue;
+			//arr[i]=0;
+		}
+		else {
+			arr[i]=num;
+		}
+	}
+	return arr;
+}
+
 //returns card in an array
 getSelectedCardArrayForQuest = function(deck){
 	var arr = [];
 	for (var i = 0; i < 5; ++i)  {
 		var card = deck.playingCards[i];
 		if(card===undefined) {
-			arr[i]=0;
+			continue;
+			//arr[i]=0;
 		}
 		else {
 			arr[i]=card.number;
@@ -399,6 +476,9 @@ parseSelectedCardArrayForQuest = function(items) {
 	var num = "";
 	for (var i = 0; i < items.length; i++) {
 		num = items[i].toString();
+		if(num === "0") {
+			continue;
+		}
 		s += num;
 		if(i+1 < items.length) {
 			s+=", ";
@@ -596,6 +676,21 @@ parseToArray = function(items) {
 	return s;
 }
 
+
+parseFromArrayToString = function(items) {
+	var s = "";
+	var num = "";
+	for (var i = 0; i < items.length; i++) {
+		if (items[i] === 10) {
+			num = 0
+		}
+		else {
+			num = items[i].toString();;
+		}
+		s += num;
+}
+	return s;
+}
 
 parseFromArray = function(items) {
 	var s = "";
