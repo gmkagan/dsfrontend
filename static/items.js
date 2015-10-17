@@ -98,41 +98,8 @@ cardSet.prototype.createBlankMarket = function(imageBase) {
 		   oImageSmallChecked=imageBase + a + "_card_sm_checked.jpg";
    		   oImageChecked=imageBase + a + "_card_checked.jpg";
 		   var name = "";
-		   switch (a) {
-			   case 1: 
-				   name = "Torch";
-				   break;
-			   case 2:
-				   name = "Shield";
-				   break;
-			   case 3:
-				   name = "Mace";
-				   break;
-			   case 4:
-				   name = "Flail";
-				   break;
-			   case 5:
-				   name = "Sword";
-				   break;
-			   case 6:
-				   name = "Axe";
-				   break;
-			   case 7:
-				   name = "Crossbow";
-				   break;
-			   case 8:
-				   name = "Helmet";
-				   break;
-			   case 9:
-				   name = "Staff";
-				   break;
-			   case 10:
-				   name = "Key";
-				   break;
-			   default:
-				   name = "Unknown";
-				   break;
-		   }
+		   name = getCardName(a);
+		   
 			this.addCard(a,name,oImage,oImageSmall,oImageLarge,oImageSmallChecked, oImageChecked, 0);
 		}
 
@@ -185,9 +152,14 @@ function playingCard(oNumber,oName, oImage,oImageSmall,oImageLarge,oImageSmallCh
 
 	}
 
-playingCard.prototype.setCountImage = function (oCount) {
+//playingCard.prototype.setCountImage = function (oCount) {
+//	
+//	this.countImg = "./images/" + oCount +  "_count_card.jpg";
+//}
+
+playingCard.prototype.setImage = function (number, oCount) {
 	
-	this.countImg = "./images/" + oCount +  "_count_card.jpg";
+	this.image = "./images/" + number +  "_card_" + oCount + ".jpg";
 }
 
 playingCard.prototype.setCardSize = function (size) {

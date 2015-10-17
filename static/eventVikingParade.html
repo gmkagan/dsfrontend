@@ -1,10 +1,7 @@
-﻿<ng-include src="'static/gameEventHeader.html'"></ng-include>
-<div class="container-fluid">
-<div class="panel panel-primary">
-	<ng-include src="'static/playerHeader.html'"></ng-include>		
-
-	<br></br>
-
+﻿<table width="100%" style="height: 100%;" cellpadding="10" cellspacing="0" border="0">
+	<tr>
+		<ng-include src="'static/gameEventHeader.html'"></ng-include>
+		<ng-include src="'static/playerHeader.html'"></ng-include>		
 	<div class="row" ng-disabled="loadingData">
 		<div class="col-sm-3" ng-repeat="cart in activePlayer.carts track by $index" >
 			<img  class="tab10" ng-if="cart.active" style="{{cart.borderColor}}" width="{{cart.width}}" height="{{cart.height}}" ng-src="{{cart.image}}" ng-click="userClickedCartImageEvent(cart.id)"></img>
@@ -19,26 +16,35 @@
 			<span ng-show="cart.active"><p>Cart can hold: {{cart.size -  cart.cards.playingCards.length}} more items(s)</p></span>
 		</div>
 	</div>
-	<p></p>
-	<table class="table table-condensed">
-		<thead>
-			<tr>
-				<td>
-					<div class="left"><ng-include src="'static/cardsEventNoClick.html'"></ng-include></div>
-				</td>
-							</tr>
-			<tr>
-				<td>
-					<div class="right"><ng-include src="'static/marketEvent.html'"></ng-include></div>
-				</td>
-			</tr>
-		</thead>
-	</table>
-</div>
+
+		<p></p>
+
+		<!-- ============ LEFT COLUMN (MENU) ============== -->
+		<td width="100%" valign="top" bgcolor="white">
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<td>
+							<div><ng-include src="'static/cardsEventNoClick.html'"></ng-include></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div><ng-include src="'static/marketEvent.html'"></ng-include></div>
+						</td>
+					</tr>
+			
+				</thead>
+			</table>
+
+		</td>
+		<!-- ============ RIGHT COLUMN (CONTENT) ============== -->
+			<td width="44%" valign="top" bgcolor="white">
+				<div><ng-include src="'static/quests.html'"></ng-include>  </div>
+			</td>
+		</tr>
+</table>
 <h4 ng-show="activePlayer.nextCartId === 1" class="tab40">Can't move items, click Complete Event.</h4>
 <h4 ng-show="totalCartCardsFound === 0 && activePlayer.nextCartId > 1 " class="tab40">You have no items in your carts, click Complete Event.</h4>
 <h4 ng-show="activePlayer.nextCartId > 1  && totalCartCardsFound > 0" class="tab40">You may move one group of items between carts/wagons.  </h4>
 <ng-include src="'static/eventTemplateNoHeader.html'"></ng-include>	
-
-		
-</div>

@@ -3,10 +3,7 @@ Awaiting others to pass..
 <img ng-src="{{knight}}"></img>
 </h4>
 <br></br>
-<!--<audio controls autoplay>
-	<source src="../sounds/ambiance.mp3" type="audio/mp3">
-</audio>
--->
+
 <div class="container" >
 	<div class="row" >
 			<div  style="float:right; padding-left: 5px; padding-right: 5px; padding-top: 2px; padding-bottom: 5px;" ng-show="isActive===false">
@@ -18,68 +15,57 @@ Awaiting others to pass..
 	</div>
 </div>
 
-	<div class="panel panel-primary">  
-		<div class="panel-heading">  
-			<!--<div class="panel-body">-->
+	<ng-include src="'static/playerHeader.html'"></ng-include>	
+	<ng-include src="'static/cartsSpectator.html'"></ng-include>		
+
+	<p></p>
+	<div class="container-fluid">
+		<table width="100%" style="height: 100%;" cellpadding="10" cellspacing="0" border="0"><tr>
+
+			<!-- ============ LEFT COLUMN (MENU) ============== -->
+			<td width="56%" valign="top" bgcolor="white">
 				<table class="table table-condensed">
-					<tr>
-						<th><big>{{activePlayer.name}}</big></th>
-						<th><big>Actions Remaining {{activePlayer.actionsRemaining}}</big></th>
-						<th><big>VP: {{activePlayer.vp}}</big></th>
-						<th><big>Bonus: {{activePlayer.bonus}}</big></th>
-						<th><big>Gold: {{activePlayer.gold}}</big></th>								
-						<th><big>Total: {{activePlayer.gold + activePlayer.vp + activePlayer.bonus}}</big></th>								
-						<th><big>Turns: {{activePlayer.turns}}</big></th>
-					</tr>
+					<thead>
+						<tr>
+							<td>
+								<div><ng-include src="'static/cardsPlayer.html'"></ng-include></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div><ng-include src="'static/marketPlayer.html'"></ng-include></div>
+							</td>
+						</tr>
+				
+					</thead>
 				</table>
-			<!--<div>-->
-		</div>
 
-		<br></br>
+			</td>	
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-3" ng-repeat="cart in activePlayer.carts track by $index" >
-					<img ng-if="cart.active" style="{{cart.borderColor}}" width="{{cart.width}}" height="{{cart.height}}" ng-src="{{cart.image}}"/>
-										
-					<span class="col-sm-1" ng-repeat="card in cart.cards.playingCards track by $index">
-						<img style="{{card.borderColor}}" ng-src="{{card.image}}"/>
-					</span>
-				</div>	
-			</div>
-			<p></p>		
-	<table class="table table-condensed">
-		<thead>
-			<tr>
-				<td>
-					<div class="left"><ng-include src="'static/cardsPlayer.html'"></ng-include></div>
+			<!-- ============ RIGHT COLUMN (CONTENT) ============== -->
+				<td width="44%" valign="top" bgcolor="white">
+						<div><ng-show="displayMode === 'game'" ng-include src="'static/quests.html'"></ng-include>  </div>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<div class="right"><ng-include src="'static/marketPlayer.html'"></ng-include></div>
-				</td>
-			</tr>
-		</thead>
-	</table>
-
-		</div>
-		<div>
-
-			<div ng-show="activePlayer.questsCompleted.playingCards.length > 0" >{{activePlayer.name}}'s Completed Quests:</div>
-			<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
-				<img style="{{card.borderColor}}" ng-src="{{questcard.image}}"></img>
-			</span>
-
-		</div>
-		
-
+		</table>
 	</div>
 
+<p></p>
+<div>
+	<button ng-show="activePlayer.questsCompleted.playingCards.length > 0" ng-disabled="loadingData===true" class="btn btn-warning" ng-click="showMyCompletedQuestsClick()" >{{showHideQuestVar}} my completed quests?</button>
+</div>
+<div ng-show="showMyCompletedQuests">
+	<span ng-repeat="questcard in activePlayer.questsCompleted.playingCards track by $index">
+		<span class="p2" aria-haspopup="true"><img ng-src="{{questcard.imageSmall}}"/><b><img class="large" ng-src="{{questcard.imageLarge}}" /></b></span>
+	</span>	
+</div>
 
 
-<button class="btn btn-warning" ng-click="showOtherPlayerDataClick()" >{{showHideVar}} Other Player Info?</button>
-<div><ng-include src="'static/otherPlayers.html'" ></ng-include></div>
+<div>	
+	<button ng-show="numberOfPlayers > 1"class="btn btn-warning" ng-click="showOtherPlayerDataClick()" >{{showHideVar}} Other Player Info?</button>
+	<div ng-show="numberOfPlayers > 1" ng-include src="'static/otherPlayers.html'" ></ng-include></div>
+</div>
+
 
 
 

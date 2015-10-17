@@ -14,6 +14,22 @@
 -o-transition:-o-transform 0.1s ease-in;
 }
 
+.block {
+    display: inline-block;
+}
+
+
+span.p3 {display:block; text-decoration:none; background:#fff; border:0; margin:2px; display:inline-block; position:relative;}
+span.p3 img {display:block; border:1px solid #aaa;}
+span.p3:hover {text-decoration:none; background:#8c97a3; color:#000; z-index:500;}
+span.p3 b {display:block; position:absolute; left:-9999px; padding:10px; opacity:0; background:#323232; border:1px solid #ddd; z-index:100;
+-webkit-transition: all 1s ease; 
+-moz-transition: all 1s ease; 
+-o-transition: all 1s ease; 
+transition: opacity 1s;
+} 
+span.p3:hover b {top:-400px; left:-200px; opacity:1;}
+
 
 span.p1 {display:block; text-decoration:none; background:#fff; border:0; margin:10px; display:inline-block; position:relative;}
 span.p1 img {display:block; border:1px solid #aaa;}
@@ -64,11 +80,11 @@ span.p2:hover b {top:-200px; left:110px; opacity:1;}
 .inputText {
 	background-color: lightyellow;
 	border-style: solid;
-	border-color: lightyellow;
+	border-color: lightblue;
 	border: 0px 4px 0px 4px;
 	padding: 1px 6px 1px 6px;
-
-	:focus
+}
+.inputText:focus {
 
 	border-style: solid;
 	border-color: black;
@@ -78,7 +94,10 @@ span.p2:hover b {top:-200px; left:110px; opacity:1;}
 
 .tab30 { margin-left: 30px; }
 
-.tab10 { margin-left: 10px; }
+.tab10 { margin-left: 10px; 
+padding: 2px;
+}
+
 
 .tab20 { margin-left: 20px; }
 
@@ -111,6 +130,7 @@ span.p2:hover b {top:-200px; left:110px; opacity:1;}
  background:white;
  overflow:hidden;
 }
+
 
 
 /*.img-with-text {

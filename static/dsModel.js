@@ -96,6 +96,7 @@ var Game = function(blankMarketImageBase, questImageBase, cartImageBase) {
 	//populated cardrs, itemHolders and quests
 	this.itemHolders.createBlankMarket(blankMarketImageBase);
 	this.itemMarketHolders.createBlankMarket(blankMarketImageBase);
+	this.marketDeckInTrade.createBlankMarket(blankMarketImageBase);
 	this.quests.createQuestDeck(questImageBase);
 	this.playersLog = [];
 	this.players = [];

@@ -37,7 +37,7 @@
 				<span ng-repeat="tradecard in game.marketDeckInTrade.playingCards track by $index">
 					<img ng-src="{{tradecard.image}}" ng-click="userClickedMarketTradeImage($index)"></img>
 				</span>
-				<button ng-disabled="loadingData===true" class="btn btn-warning" ng-show="sumMarketValueSelected < 11 && sumMarketValueSelected > 0 && activePlayer.cardSumSelected === sumMarketValueSelected" ng-click="playerMarketTrade()" >Trade {{game.sumMarketValueSelected}} item points?</button>    
+				<button ng-disabled="loadingData===true" class="btn btn-primary" ng-show="sumMarketValueSelected < 11 && sumMarketValueSelected > 0 && activePlayer.cardSumSelected === sumMarketValueSelected" ng-click="playerMarketTrade()" >Trade {{game.sumMarketValueSelected}} item points?</button>    
 			</td>
 		</tr>
 

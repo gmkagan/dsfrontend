@@ -30,90 +30,47 @@
 </head>
 
 <body ng-controller="dsCtrl">
+	<ng-include src="'static/audioElements.html'"></ng-include>
 
-<audio id="choppingWood">
-	<source src="sounds/choppingWood.mp3"></source>
-</audio>
-<audio id="trash">
-	<source src="sounds/trash.mp3"></source>
-</audio>
-<audio id="ambiance">
-	<source src="sounds/ambiance.mp3"></source>
-</audio>
-<audio id="card">
-	<source src="sounds/card.mp3"></source>
-</audio>
-<audio id="anvil">
-	<source src="sounds/anvil.mp3"></source>
-</audio>
-<audio id="swords">
-	<source src="sounds/swords.mp3"></source>
-</audio>
-<audio id="horseNeigh">
-	<source src="sounds/horseNeigh.mp3"></source>
-</audio>
-<audio id="questComplete">
-	<source src="sounds/questComplete.mp3"></source>
-</audio>
-<audio id="fish">
-	<source src="sounds/fish.mp3"></source>
-</audio>
-<audio id="button">
-	<source src="sounds/button.mp3"></source>
-</audio>
-<audio id="cards">
-	<source src="sounds/cards.mp3"></source>
-</audio>
-<audio id="pass">
-	<source src="sounds/pass.mp3"></source>
-</audio>
-<audio id="market">
-	<source src="sounds/market.mp3"></source>
-</audio>
-<audio id="buyCart">
-	<source src="sounds/buyCart.mp3"></source>
-</audio>
+	<div class="container-fluid">
+		<div class="panel-body">
+			<div class="panel panel-info">
+				<span class="pull-right">
+					<button class="btn btn-info" ng-click="showOptionsClick()">Options</button>
+					<button class="btn btn-primary" ng-click="noGame()">Reset</button>
+				</span>
+				<span class="pull-right">
+					<ng-include src="'static/options.html'" ng-show="showOptions"></ng-include>
+				</span>
+	<!--		<div class="panel-heading">-->
+				<img ng-show="displayMode != 'nogame'" ng-src="{{titleImg}}"></img><big> {{displayModeName}}</big>
 
-<div class="container-fluid">
-    <div class="panel panel-info">
-		<div class="panel-heading">
-			<span class="panel-title pull-right">
-				<button class="btn btn-info" ng-click="showOptionsClick()">Options</button>
-				<button class="btn btn-primary" ng-click="noGame()">Reset</button>
-			</span>
-			<span class="panel-title pull-right">
-				<ng-include src="'static/options.html'" ng-show="showOptions"></ng-include>
-			</span>
-		</div>			
-		<div class="panel-heading">
-			<img ng-show="displayMode != 'nogame'" ng-src="{{titleImg}}"></img><big> {{displayModeName}}</big>
-
-			<ng-include src="'static/nogame.html'" ng-show="displayMode === 'nogame'"></ng-include>
-			<ng-include src="'static/game.html'" ng-show="displayMode === 'game'"></ng-include>
-			<ng-include src="'static/gameSpectator.html'" ng-show="displayMode === 'gameSpectator'"></ng-include>
-			<ng-include src="'static/eventCompleted.html'" ng-show="displayMode === 'eventCompleted'"></ng-include>
-			<ng-include src="'static/gameover.html'" ng-show="displayMode === 'gameover'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventTemplate'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventKingsFeast'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventMarketShortage'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventMarketSurplus'"></ng-include>
-			<ng-include src="'static/eventVikingParade.html'" ng-show="displayMode === 'eventVikingParade'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventTreasure'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventBarbarianAttack'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventSandStorm'"></ng-include>
-			<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventHailStorm'"></ng-include>
-			<ng-include src="'static/eventOrcsAttack.html'" ng-show="displayMode === 'eventOrcsAttack'"></ng-include>
-			<ng-include src="'static/eventBrokenItems.html'" ng-show="displayMode === 'eventBrokenItems'"></ng-include>
-			<ng-include src="'static/eventCastleTaxation.html'" ng-show="displayMode === 'eventCastleTaxation'"></ng-include>
-			<ng-include src="'static/eventGoblinRaid.html'" ng-show="displayMode === 'eventGolbinRaid'"></ng-include>
-			<ng-include src="'static/eventHiddenRoom.html'" ng-show="displayMode === 'eventHiddenRoom'"></ng-include>
-			<ng-include src="'static/eventThrownInTheDungeon.html'" ng-show="displayMode === 'eventThrownInTheDungeon'"></ng-include>
+				<ng-include src="'static/nogame.html'" ng-show="displayMode === 'nogame'"></ng-include>
+				<ng-include src="'static/game.html'" ng-show="displayMode === 'game'"></ng-include>
+				<ng-include src="'static/gameSpectator.html'" ng-show="displayMode === 'gameSpectator'"></ng-include>
+				<ng-include src="'static/eventCompleted.html'" ng-show="displayMode === 'eventCompleted'"></ng-include>
+				<ng-include src="'static/gameover.html'" ng-show="displayMode === 'gameover'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventTemplate'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventKingsFeast'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventMarketShortage'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventMarketSurplus'"></ng-include>
+				<ng-include src="'static/eventVikingParade.html'" ng-show="displayMode === 'eventVikingParade'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventTreasure'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventBarbarianAttack'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventSandStorm'"></ng-include>
+				<ng-include src="'static/eventTemplate.html'" ng-show="displayMode === 'eventHailStorm'"></ng-include>
+				<ng-include src="'static/eventOrcsAttack.html'" ng-show="displayMode === 'eventOrcsAttack'"></ng-include>
+				<ng-include src="'static/eventBrokenItems.html'" ng-show="displayMode === 'eventBrokenItems'"></ng-include>
+				<ng-include src="'static/eventCastleTaxation.html'" ng-show="displayMode === 'eventCastleTaxation'"></ng-include>
+				<ng-include src="'static/eventGoblinRaid.html'" ng-show="displayMode === 'eventGolbinRaid'"></ng-include>
+				<ng-include src="'static/eventHiddenRoom.html'" ng-show="displayMode === 'eventHiddenRoom'"></ng-include>
+				<ng-include src="'static/eventThrownInTheDungeon.html'" ng-show="displayMode === 'eventThrownInTheDungeon'"></ng-include>
+			<!--</div>-->
+			<div ng-show="displayMode != 'nogame' && displayMode != 'gameover' && displayMode != 'eventCompleted'">
+				<div><ng-include src="'static/gameFooter.html'" ></ng-include></div>
+				<div><ng-include src="'static/playerLog.html'"></ng-include></div>
+			</div>
 		</div>
-	</div>
-	<div ng-show="displayMode != 'nogame' && displayMode != 'gameover' && displayMode != 'eventCompleted'">
-		<div><ng-show="displayMode === 'game'" ng-include src="'static/quests.html'"></ng-include>  </div>
-		<div><ng-include src="'static/gameFooter.html'" ></ng-include></div>
-		<div><ng-include src="'static/playerLog.html'"></ng-include></div>
 	</div>
 </div>
 </body>

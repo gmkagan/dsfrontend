@@ -1,28 +1,51 @@
-<table>
-	<thead>
-	<tr><big><b><u>Market:</u></b></big>
-		<td>
-			<span ng-style="padding-left: 5px; padding-right: 5px; padding-top: 5px;" ng-repeat="marketcard in game.itemMarketHolders.playingCards track by $index">
-				<span> 
-					<img ng-show = "marketcard.count > 0" ng-src="{{marketcard.countImg}}" ng-click="userClickedMarketImage($index)"></img>
-				</span>
-			</span>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<span ng-style="padding-left: 5px; padding-right: 5px; padding-top: 5px; " ng-repeat="marketcard in game.itemMarketHolders.playingCards track by $index">
-				<img ng-show = "marketcard.count > 0" ng-src="{{marketcard.image}}" ng-click="userClickedMarketImage($index)"></img>
-			</span>
-		</td>
-		<td  ng-show="isActive===true"> <span  ng-show="sumMarketValueSelected > 0"><b style="padding-left: 150px;">Items selected for trade:</b></span>
-			<span ng-style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;"  ng-repeat="tradecard in game.marketDeckInTrade.playingCards track by $index">
-				<img ng-src="{{tradecard.image}}" ng-click="userClickedMarketTradeImage($index)"></img>
-			</span>
-			<span ng-disabled="loadingData===true" >
-				<button class="btn btn-warning" ng-show="sumMarketValueSelected < 11 && sumMarketValueSelected > 0 && activePlayer.cardSumSelected === sumMarketValueSelected" ng-click="playerMarketTrade()" >Trade {{game.sumMarketValueSelected}} item points?</button>    
-			</span>
-		</td>
-	</tr>
-	</thead>
-</table>
+<div class="panel panel-info" style="float:center; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;">  
+	<div class="panel-heading">  
+		<div class="panel-body">
+			<table style="float: center;" class = "table table-condensed">
+				<thead>
+					<tr>
+						<td>
+							<h4>Market:</h4> 
+						</td>
+					</tr>	
+					<tr>
+						<td>
+							<span ng-repeat="marketcard in game.itemMarketHolders.playingCards track by $index">
+								<img  ng-show = "marketcard.count > 0" ng-src="{{marketcard.image}}" ng-click="userClickedMarketImage($index)"></img>
+							</span>
+<!--								<table >
+								<thead>
+
+									<tr>
+										<td>
+											<img ng-show = "marketcard.count > 0" ng-src="{{marketcard.countImg}}" ng-click="userClickedMarketImage($index)"></img>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<img  ng-show = "marketcard.count > 0" ng-src="{{marketcard.image}}" ng-click="userClickedMarketImage($index)"></img>
+										</td>
+									</tr>
+
+
+								</thead>
+								</table>-->
+
+						</td>
+					</tr>	
+					<tr ng-show="isActive===true">
+						<td> 
+							<span  ng-show="sumMarketValueSelected > 0"><b style="padding-left: 100px;">Items selected for trade:</b></span>
+							<span ng-repeat="tradecard in game.marketDeckInTrade.playingCards track by $index">
+								<img ng-show = "tradecard.count > 0" ng-src="{{tradecard.image}}" ng-click="userClickedMarketTradeImage($index)"></img>
+							</span>
+							<span ng-disabled="loadingData===true" >
+								<button class="btn btn-primary" ng-show="sumMarketValueSelected < 11 && sumMarketValueSelected > 0 && activePlayer.cardSumSelected === sumMarketValueSelected" ng-click="playerMarketTrade()" >Trade {{game.sumMarketValueSelected}} item points?</button>    
+							</span>
+						</td>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>

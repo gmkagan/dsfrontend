@@ -177,7 +177,7 @@ getCardName = function (number) {
 	return name;
 }
 
-getAdj = function(i) {
+setAdj = function() {
 	var adj = [];
 	adj[0] = "dope";
 	adj[1] = "shaky";
@@ -190,8 +190,10 @@ getAdj = function(i) {
 	adj[8] = "rugged";
 	adj[9] = "powerhouse";
 	adj[10] = "secure";
-	return adj[i];
+	
+	return adj; 
 }
+
 
 playerCardChecked = function(card) {
 	if(card.selected) {
@@ -535,6 +537,27 @@ getSelectedCard = function(deck){
 }
 
 //returns card numbers appended to each other for deck.  ex. 1224
+getCountCards = function(deck){
+	var items = "";
+	var cardNumber = "";
+	for (var i = 0; i < deck.playingCards.length; ++i)  {
+		var card = deck.playingCards[i];
+		cardNumber = card.number;
+		if(card.number===10) {
+			cardNumber = 0;
+		}
+		if(card.count > 0) {
+			for (var j = 0; j < card.count; ++j)  {
+				items+=cardNumber;
+			}
+		}
+	}
+	
+	return items;
+
+}
+
+//returns card numbers appended to each other for deck.  ex. 1224
 getSelectedCards = function(deck, selectedCardsOnly){
 	var selectedCards = "";
 	var cardNumber = "";
@@ -671,10 +694,26 @@ setMarketCounts = function(game) {
 		}
 		//update the item card and the count
 		game.itemMarketHolders.playingCards[j-1].count = cardCount;
-		game.itemMarketHolders.playingCards[j-1].setCountImage(cardCount);
+		//game.itemMarketHolders.playingCards[j-1].setCountImage(cardCount);
+		game.itemMarketHolders.playingCards[j-1].setImage(j, cardCount);
 	}
 
 }
+
+
+//setTradeCounts = function(deck) {
+//	/*this function will:
+//	go through all cards in trade card stack and set to zero
+//	*/	
+//	var cardCount =0;
+//	var tradeLength = deck.playingCards.length;
+//	for (var j=1; j<11; j++) {
+//		deck.playingCards[j-1].count = cardCount;
+//		deck.playingCards[j-1].setImage(j, cardCount);
+//	}
+//
+//}
+
 
 
 
