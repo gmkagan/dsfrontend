@@ -267,6 +267,73 @@ var getPlayerName = function(game, playerId) {
 	}
 }
 
+function checkIfQuestIsReadyFromCartAndHand (game, player) {
+	var questinProgress = false;
+	var cartId = -1;
+	var questIndex = -1;
+	var arr = [];
+	
+	var questReady = {};
+		for (var i = 0; i < player.carts.length; ++i) {
+		if(!player.carts[i].active) {
+			continue;
+		}
+		if(player.carts[i].cards.playingCards.length === 0) {
+			continue;
+		}
+		var cardsInCart = getSelectedCardArrayForQuest(player.carts[i].cards);
+		
+		for (var j = 0; j < game.questsInPlay.playingCards.length; ++j) {
+			var questFound = game.questsInPlay.playingCards[j];
+			if(questFound.level===4) {
+				continue;
+			}
+			var quest =  getSelectedCardArray(new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5));
+
+			var r = getIntersect(cardsInCart, quest);
+            var handArr = getSelectedCardArrayForQuest(player.cards);
+			
+			if (r.length >= 1 ){
+				questinProgress = true;
+				questFound.borderColor = 'border:8px solid lightgreen;';
+				//go through player cards to find what's missing
+				//get diff from r and quest and compare to hand
+                var c = symmetric_difference(r, quest)
+                //check all cards in hand for c items
+				//check if c length > 0
+				if (c.length > 0) {
+					var s = getIntersect(c, handArr);
+					if(s.length + r.length === quest.length) {
+						//go through hand items and select them for full intersect of hand
+						questReady.s = s;
+						questReady.handArr = handArr;
+                        return questReady;
+					}
+				}
+
+			}
+
+		}
+	}
+
+	
+}
+
+function symmetric_difference(a1, a2) {
+  var result = [];
+  for (var i = 0; i < a1.length; i++) {
+    if (a2.indexOf(a1[i]) === -1) {
+      result.push(a1[i]);
+    }
+  }
+  for (i = 0; i < a2.length; i++) {
+    if (a1.indexOf(a2[i]) === -1) {
+      result.push(a2[i]);
+    }
+  }
+  return result;
+}
+
 checkIfQuestIsReadyFromCart = function (game, player) {
 	var questCanBeCompleted = false;
 	var cartId = -1;
@@ -318,11 +385,10 @@ checkIfQuestIsReadyFromCart = function (game, player) {
 
 
 
-function checkOtherPlayerCartsForQuests (game, player) {
+function checkCartsForQuestsInProgress (game, player) {
 	var questinProgress = false;
 	var cartId = -1;
 	var questIndex = -1;
-	var questAlmostReady = {};
 	
 	for (var i = 0; i < player.carts.length; ++i) {
 		if(!player.carts[i].active) {
@@ -338,25 +404,13 @@ function checkOtherPlayerCartsForQuests (game, player) {
 				continue;
 			}
 			var quest =  getSelectedCardArray(new Array(questFound.item1, questFound.item2, questFound.item3, questFound.item4, questFound.item5));
-			
 
-			//for(var k = quest.length - 1; k >= 0; k--) {
-			//	if(quest[k] === 0) {
-			//	   quest.splice(k, 1);
-			//	}
-			//}						
-						
 			var r = getIntersect(selectedCards, quest);
-
 
 			if (r.length >= 2 ){
 				questinProgress = true;
 				questFound.borderColor = 'border:5px solid red;';
-				//questAlmostReady.items = r;
-				//questAlmostReady.questCard = questFound;
-				//questAlmostReady.index = j;
 
-				//return questAlmostReady;
 			}
 
 		}
@@ -382,7 +436,7 @@ function getIntersect(hand, quest) {
 			return r;
 		}
 
-var checkIfQuestISReadyFromHand = function (game, player, autoSelectHand) {
+var checkIfQuestISReadyFromHand = function (game, player) {
 	var questCanBeCompleted = false;
 	var r = [];
 	var hand = [];
@@ -458,7 +512,7 @@ getSelectedCardArray = function(items){
 //returns card in an array
 getSelectedCardArrayForQuest = function(deck){
 	var arr = [];
-	for (var i = 0; i < 5; ++i)  {
+	for (var i = 0; i < deck.playingCards.length; ++i)  {
 		var card = deck.playingCards[i];
 		if(card===undefined) {
 			continue;

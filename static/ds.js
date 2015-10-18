@@ -1852,7 +1852,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				updatePlayerCarts(game, otherPlayer, otherPlayer.carts[c], data.otherPlayers[z].carts[c]);	
 			}
 			
-			checkOtherPlayerCartsForQuests(game, otherPlayer);
+			checkCartsForQuestsInProgress(game, otherPlayer);
 			
 			for (var q = 0; q < data.otherPlayers[z].questsCompleted.length; ++q) {   
 				dealQuestsCompleted(game, otherPlayer.questsCompleted, data.otherPlayers[z].questsCompleted[q].items);
@@ -1937,7 +1937,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 			}
 		}
 		 
-		var questReady = checkIfQuestISReadyFromHand(game, player, $scope.autoSelectHand);
+		var questReady = checkIfQuestISReadyFromHand(game, player);
 		if(questReady.items != undefined) {
 			if(questReady.items.length >=3 && $scope.autoSelectHand) {
 				if($scope.displayMode === 'game') {	
@@ -1953,7 +1953,33 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 				}
 			}
 		}
+		
+		if($scope.autoSelectHand) {
+		if(questReady.items === undefined)  {
+		    var questItemsFromHand = checkIfQuestIsReadyFromCartAndHand(game, player);
+			if(questItemsFromHand != undefined) {
+		     for (var l = 0; l < questItemsFromHand.s.length; ++l) {
+			     for (var k = 0; k < questItemsFromHand.handArr.length; ++k) {
+				     if(questItemsFromHand.handArr[k] === questItemsFromHand.s[l]) {
+				 		$scope.userClickedItemImage(k);
+				 	 }
+    			 }	
+			 }
+			}
+		}
+		}
 
+		//if cart is one away and market has item and hand can buy item and actions > 0
+		//select market item for trade
+		//select cards in hand that add up to market
+		
+		
+
+		//if cart is more than one away and market has items and hand can buy item and actions > 0
+		//select market items for trade
+		//select one card in hand that add up to market
+
+		
 		
 		//dont autopass in the middle of an event or if you can complete a quest
 		if($scope.displayMode === 'game' ) {
