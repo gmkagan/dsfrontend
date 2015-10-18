@@ -44,6 +44,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	$scope.playMusic = false;
 	$scope.autoSelectHand = true;
 	$scope.autoSelectCart = true;
+	$scope.autoSelectMarket = true;
 	$scope.autoSelectQuest = true;
 	$scope.autoPass = true;
 	$scope.hideImagesBool = false;
@@ -54,7 +55,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	$scope.activeCartId = -1;
 
 	//card gui variables
-	$scope.borderPXselected = 'border: 5px solid green;';
+	$scope.borderPXselected = 'border: 5px solid lightgreen;';
 	$scope.borderPX = "border: 1px solid black;";
 	$scope.borderPXorig = "border: 1px solid black;";
 
@@ -171,6 +172,10 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		$scope.showOptions = !$scope.showOptions;
 	}	
 	
+	
+	$scope.autoSelectMarketCheck = function () {
+		$scope.autoSelectMarket = !$scope.autoSelectMarket;
+	}	
 	$scope.autoSelectHandCheck = function () {
 		$scope.autoSelectHand = !$scope.autoSelectHand;
 	}	
@@ -1154,7 +1159,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 	//events.push(new Event(6,"BarbarianAttack"));
 	//events.push(new Event(7,"BrokenItems"));
 	//events.push(new Event(8,"CastleTaxation"));
-	//events.push(new Event(9,"GolbinRaid"));
+	//events.push(new Event(9,"GoblinRaid"));
 	//events.push(new Event(10,"KingsFeast"));
 	//events.push(new Event(11,"MarketShortage"));
 	//events.push(new Event(12,"MarketSurplus"));
@@ -1261,7 +1266,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 					break;
 			
 
-				case 'eventGolbinRaid':	
+				case 'eventGoblinRaid':	
 					eventId = 9;
 					//nothing to give up
 					if(totalCartCards===0) {
@@ -1499,7 +1504,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 //	Event(6,"BarbarianAttack"
 //	Event(7,"BrokenItems"
 //	Event(8,"CastleTaxation"
-//	Event(9,"GolbinRaid"
+//	Event(9,"GoblinRaid"
 //	Event(10,"KingsFeast"
 //	Event(11,"MarketShortage"
 //	Event(12,"MarketSurplus"
@@ -1760,6 +1765,7 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		//setTradeCounts(game.marketDeckInTrade);
 		
 		
+		data.market.sort(function(a,b){return a - b})
         for (var i = 0; i < data.market.length; ++i) {   
 			dealNumberToMarket(game, data.market[i]);	
 		}
@@ -1955,24 +1961,52 @@ app.controller('dsCtrl', ['$scope', 'gameFactory', function ($scope, gameFactory
 		}
 		
 		if($scope.autoSelectHand) {
-		if(questReady.items === undefined)  {
-		    var questItemsFromHand = checkIfQuestIsReadyFromCartAndHand(game, player);
-			if(questItemsFromHand != undefined) {
-		     for (var l = 0; l < questItemsFromHand.s.length; ++l) {
-			     for (var k = 0; k < questItemsFromHand.handArr.length; ++k) {
-				     if(questItemsFromHand.handArr[k] === questItemsFromHand.s[l]) {
-				 		$scope.userClickedItemImage(k);
-				 	 }
-    			 }	
-			 }
+			//this only goes here if there isnt a perfect match from hand already
+			if(questReady.items === undefined)  {
+				var questItemsFromHandandMarket = checkIfQuestIsReadyFromCartAndHand(game, player);
+				if(questItemsFromHandandMarket != undefined) {
+					if(questItemsFromHandandMarket.s != undefined) {
+						for (var l = 0; l < questItemsFromHandandMarket.s.length; ++l) {
+							for (var k = 0; k < questItemsFromHandandMarket.handArr.length; ++k) {
+								if(questItemsFromHandandMarket.handArr[k] === questItemsFromHandandMarket.s[l]) {
+								   $scope.userClickedItemImage(k);
+								}
+							}	
+						}
+					}
+					if($scope.autoSelectMarket && questItemsFromHandandMarket.s === undefined) {
+						var handItemsFound = findSum(getSelectedCardArrayForQuest(player.cards),questItemsFromHandandMarket.marketSum)
+						//must be one to many
+						if(handItemsFound != undefined) {
+							if(handItemsFound.length > 1) {
+								//click the market item first
+								$scope.userClickedMarketImage(questItemsFromHandandMarket.marketCardIndex);
+								for (var j = 0; j < handItemsFound.length; ++j) {
+									for (var h = 0; h < player.cards.playingCards.length; ++h) {
+										var card = player.cards.playingCards[h];
+										if(card.selected) {
+											continue;
+										}
+										else {
+											if( card.number === handItemsFound[j]) {
+											   $scope.userClickedItemImage(h);
+											   break;
+											}
+										}	
+									}
+								}
+							}
+						}
+					}
+			   }
 			}
-		}
 		}
 
 		//if cart is one away and market has item and hand can buy item and actions > 0
 		//select market item for trade
 		//select cards in hand that add up to market
-		
+		//only if cart and hand items dont already have a perfect match
+
 		
 
 		//if cart is more than one away and market has items and hand can buy item and actions > 0

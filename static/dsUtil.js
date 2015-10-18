@@ -14,7 +14,7 @@ var prepEvents = function() {
 	events.push(new Event(6,"BarbarianAttack","Barbarian Attack"));
 	events.push(new Event(7,"BrokenItems","Broken Items"));
 	events.push(new Event(8,"CastleTaxation","Castle Taxation"));
-	events.push(new Event(9,"GolbinRaid","Goblin Raid"));
+	events.push(new Event(9,"GoblinRaid","Goblin Raid"));
 	events.push(new Event(10,"KingsFeast","Kings Feast"));
 	events.push(new Event(11,"MarketShortage","Market Shortage"));
 	events.push(new Event(12,"MarketSurplus","Market Surplus"));
@@ -267,12 +267,17 @@ var getPlayerName = function(game, playerId) {
 	}
 }
 
-function checkIfQuestIsReadyFromCartAndHand (game, player) {
+function checkIfQuestIsReadyFromCartHandMarket (game, player) {
 	var questinProgress = false;
-	var cartId = -1;
-	var questIndex = -1;
-	var arr = [];
+	var questReady = {};
 	
+
+}
+
+
+
+function checkIfQuestIsReadyFromCartAndHand (game, player) {
+	//var questinProgress = false;
 	var questReady = {};
 		for (var i = 0; i < player.carts.length; ++i) {
 		if(!player.carts[i].active) {
@@ -294,8 +299,12 @@ function checkIfQuestIsReadyFromCartAndHand (game, player) {
             var handArr = getSelectedCardArrayForQuest(player.cards);
 			
 			if (r.length >= 1 ){
-				questinProgress = true;
-				questFound.borderColor = 'border:8px solid lightgreen;';
+				//questinProgress = true;
+				
+				//only turn green if the cart has a good partial match and no junk
+				if(r.length === cardsInCart.length) {
+				   questFound.borderColor = 'border:8px solid yellow;';
+				}
 				//go through player cards to find what's missing
 				//get diff from r and quest and compare to hand
                 var c = symmetric_difference(r, quest)
@@ -303,11 +312,32 @@ function checkIfQuestIsReadyFromCartAndHand (game, player) {
 				//check if c length > 0
 				if (c.length > 0) {
 					var s = getIntersect(c, handArr);
-					if(s.length + r.length === quest.length) {
+					//only turn green if the cart has a full match and no junk
+					if(s.length + r.length === quest.length && r.length === cardsInCart.length) {
+						questFound.borderColor = 'border:8px solid lightgreen;';
 						//go through hand items and select them for full intersect of hand
 						questReady.s = s;
 						questReady.handArr = handArr;
                         return questReady;
+					}
+					//if one item is missing and no junk in cart found, then check market 
+					//many hand to one market
+					if(c.length === 1  && r.length === cardsInCart.length) {
+						questReady.s = undefined;
+						for (var m = 0; m < game.marketDeck.playingCards.length; ++m) {   
+			                 var card = game.marketDeck.playingCards[m];
+							 if(card.number === c[0]) {
+								 //must use card.number+1 as itemmarketholders are all the numbers 1-10, starting at zero
+								questReady.marketCardIndex = card.number - 1;
+								questReady.marketSum = card.number;
+		 						questReady.handArr = handArr;
+								return questReady;
+							 }
+		                }
+					}
+					//one hand to many market
+					if(c.length < 1) {
+						return;
 					}
 				}
 
@@ -318,6 +348,58 @@ function checkIfQuestIsReadyFromCartAndHand (game, player) {
 
 	
 }
+
+
+
+//>> findSum([1,2,3,4,5],6)
+//[1, 2, 3]
+//>> findSum([1,2,3,4,5],0)
+//[]
+//>> findSum([1,2,3,4,5],11)
+//[1, 2, 3, 5]
+
+//>> findSums([1,2,3,4,5],5);
+//[[2,3],[1,4],[5]]
+//>> findSums([1,2,3,4,5],0);
+//[[]]
+
+function powerset(arr) {
+    var ps = [[]];
+    for (var i=0; i < arr.length; i++) {
+        for (var j = 0, len = ps.length; j < len; j++) {
+            ps.push(ps[j].concat(arr[i]));
+        }
+    }
+    return ps;
+}
+
+function sum(arr) {
+    var total = 0;
+    for (var i = 0; i < arr.length; i++)
+        total += arr[i];
+    return total
+}
+
+function findSum(numbers, targetSum) {
+    var numberSets = powerset(numbers);
+    for (var i=0; i < numberSets.length; i++) {
+        var numberSet = numberSets[i]; 
+        if (sum(numberSet) == targetSum)
+            return numberSet;
+    }
+}
+
+function findSums(numbers, targetSum) {
+    var sumSets = [];
+    var numberSets = powerset(numbers);
+    for (var i=0; i < numberSets.length; i++) {
+        var numberSet = numberSets[i]; 
+        if (sum(numberSet) == targetSum)
+            sumSets.push(numberSet);
+    }
+    return sumSets;
+}
+
 
 function symmetric_difference(a1, a2) {
   var result = [];
@@ -372,7 +454,7 @@ checkIfQuestIsReadyFromCart = function (game, player) {
 	
 	if (questCanBeCompleted === true) {
 		questFound.selected = true;
-		questFound.borderColor = 'border:10px solid green';
+		questFound.borderColor = 'border:10px solid lightgreen';
 		questReady.cartId = cartId;
 		questReady.questCard = questFound;
 		questReady.items = cartWithItems.playingCards;
@@ -480,7 +562,7 @@ var checkIfQuestISReadyFromHand = function (game, player) {
 		var b = parseSelectedCardArrayForQuest(r);
 		if (a === b){
 			questCanBeCompleted = true;
-			questFound.borderColor = 'border:10px solid green;';
+			questFound.borderColor = 'border:10px solid lightgreen;';
 			questReady.items = r;
 			questReady.questCard = questFound;
 			questReady.index = j;
@@ -493,7 +575,7 @@ var checkIfQuestISReadyFromHand = function (game, player) {
 }
 
 
-//returns card in an array
+//returns array without the zeros
 getSelectedCardArray = function(items){
 	var arr = [];
 	for (var i = 0; i < 5; ++i)  {
@@ -546,7 +628,7 @@ updatePlayerCarts = function(game, player, playerCart, dataCart) {
 	playerCart.destroyed = dataCart.destroyed;
 	if(playerCart.active) {
 		playerCart.image = playerCart.imagePurchased;
-		player.nextCartId ++;
+		player.nextCartId = playerCart.id + 1;
 		player.nextCartName = nextCartName(player.nextCartId);
 		for (var i = 0; i < dataCart.inCart.length; ++i) {   
 			updatePlayerCartItems(game, playerCart, dataCart.inCart[i]);	
