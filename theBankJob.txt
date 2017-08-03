@@ -1,0 +1,68 @@
+4 players
+Red
+Green
+Yellow
+Black
+
+cops - BLUE
+Generic - white
+
+Safe - cards 0-9
+first player to crack safe gets EOG safe crack card
+
+pick 3 for combination
+pick 3 for combination
+pick 4 for combination
+pick 4 for combination
+pick 5 for combination
+
+send your guys to the safe to shuffle and view # of cards.  Keep track of the cards you see with 5 squares, safe crack strip and hidden shield
+use tools/guys to see extra cards
+
+
+Safe deposit boxes
+fill contracts
+
+hardware supplies
+gain 1 white tool cube to use (generic color)
+most cubes here of your color gains 5 vp, 3 vp, 1 vp
+
+
+Sliding market of cards - 4 cash, 3 cash, 2 cash, 1 cash, 0 cash
+allow for more pulls of cubes from marks
+if you get any blue cubes (cops) they take one item per
+if you get equal or more cops than cubes, you get caught.
+Cops go back to precient, you go into jail
+
+Bail out your henchmen for cash (2 cash first guy, then 3, then 3, then 4)
+
+
+special locations you can keep
+View 1 safe crack code - costs 1
+view 2 safe crack code - costs 1
+gain 1 henchman (costs 2 to recruit) must always use one of your color cubes at a minimum
+
+special locations with one time usage
++ 2 white cubes henchmen
+
+
+you can have up to 3 special locations
+Pawn off any special location for resource shown on bottom
+
+Pawn exchange for resources
+first player gets best deal, etc
+trade gems for cash
+red - 2 cash
+blue - 3 cash
+purple - 5 cash
+
+
+use generic as additional for location spots
+
+Gain the loot pile
+Gain 1 cash per left over guy
+
+Change the order of play - get your guy back to place at end of round
+
+
+End of game cards for scoring - gather as many of these as you can
